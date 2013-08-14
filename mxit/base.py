@@ -1,4 +1,4 @@
-from exceptions import MxitAPIException
+from exceptions import MxitAPIException, MxitAPIAuthException
 from requests import post
 from requests.auth import HTTPBasicAuth
 import json
