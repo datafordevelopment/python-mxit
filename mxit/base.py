@@ -13,7 +13,7 @@ class MxitAPIBase():
 
     def __getToken(self, scope):
         token = None
-        
+
         if scope in self.__tokens:
             return self.__tokens[scope]
 
@@ -45,12 +45,14 @@ class MxitAPIBase():
 
         headers = { 'Content-Type': 'application/json', 'Accept': 'application/json', 'Authorization': 'Bearer ' + token }
         r = post("http://api.mxit.com" + uri, data=json.dumps(data), headers=headers)
-        if r.status_code != 200:
-            raise MxitAPIException("Unexpected response")
 
         response = ''
         for chunk in r.iter_content():
             response += chunk
+
+        if r.status_code != 200:
+            raise MxitAPIException("Unexpected HTTP Status: " + r.status_code)
+
         return response
 
 
