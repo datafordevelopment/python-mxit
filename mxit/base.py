@@ -51,7 +51,7 @@ class MxitAPIBase():
             response += chunk
 
         if r.status_code != 200:
-            raise MxitAPIException("Unexpected HTTP Status: " + r.status_code)
+            raise MxitAPIException("Unexpected HTTP Status: %s" % r.status_code)
 
         return response
 
