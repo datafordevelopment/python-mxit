@@ -33,8 +33,10 @@ class MxitAPIBase():
                     if self.__cache is not None:
                         self.__cache.set(key, str(token), expires)
 
-        if token is not None:
-            self.__tokens[scope] = token
+        if not token:
+            raise MxitAPIException("Failed to retrieve token for '%s' scope" % scope)
+
+        self.__tokens[scope] = token
 
         return token
 
