@@ -4,7 +4,6 @@ from requests.auth import HTTPBasicAuth
 import json
 
 class MxitAPIBase():
-    __tokens = { }
 
     def __init__(self, consumerKey, secretKey, cache=None):
         self.__consumerKey = consumerKey
@@ -13,9 +12,6 @@ class MxitAPIBase():
 
     def __getToken(self, scope):
         token = None
-
-        if scope in self.__tokens:
-            return self.__tokens[scope]
 
         if self.__cache is not None:
             key = str("%s%s" % (scope.replace("/", "_"), self.__consumerKey))
@@ -36,8 +32,6 @@ class MxitAPIBase():
         if not token:
             raise MxitAPIException("Failed to retrieve token for '%s' scope" % scope)
 
-        self.__tokens[scope] = token
-
         return token
 
     def _makeRequest(self, uri, scope, data=None):
@@ -53,7 +47,7 @@ class MxitAPIBase():
             response += chunk
 
         if r.status_code != 200:
-            raise MxitAPIException("Unexpected HTTP Status: %s" % r.status_code)
+            raise MxitAPIException("Unexpected HTTP Status: %s" % r.status_code, { 'response': response })
 
         return response
 
