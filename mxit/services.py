@@ -1,6 +1,6 @@
 import json
 import urllib
-from requests import get, post
+from requests import get, post, put
 from mxit import settings
 from mxit.exceptions import MxitAPIException
 
@@ -82,7 +82,11 @@ class UserService(BaseService):
         Set the Mxit user's status
         User authentication required with the following scope: 'status/write'
         """
-        raise NotImplementedError()
+        return _put(
+            token=self.oauth.get_user_token('status/write'),
+            uri='/user/statusmessage',
+            data=json.dumps(message)
+        )
 
     def get_display_name(self, mxit_id):
         """
@@ -179,15 +183,23 @@ class UserService(BaseService):
         Retrieve the Mxit user's full profile
         User authentication required with the following scope: 'graph/read'
         """
-        raise NotImplementedError()
+        suggestions = _get(
+            token=self.oauth.get_user_token('graph/read'),
+            uri='/user/socialgraph/suggestions'
+        )
+
+        try:
+            return json.loads(suggestions)
+        except:
+            raise MxitAPIException('Error parsing suggestions data')
 
 
 # HTTP helper methods
 
-def _get(token, uri):
+def _get(token, uri, content_type='application/json'):
     headers = {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
+        'Content-Type': content_type,
+        'Accept': content_type,
         'Authorization': 'Bearer ' + token
     }
 
@@ -203,14 +215,33 @@ def _get(token, uri):
     return response
 
 
-def _post(token, uri, data):
+def _post(token, uri, data, content_type='application/json'):
     headers = {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
+        'Content-Type': content_type,
+        'Accept': content_type,
         'Authorization': 'Bearer ' + token
     }
 
     r = post(settings.API_ENDPOINT + uri, data=json.dumps(data), headers=headers)
+
+    response = ''
+    for chunk in r.iter_content():
+        response += chunk
+
+    if r.status_code != 200:
+        raise MxitAPIException("Unexpected HTTP Status: %s" % r.status_code, {'response': response})
+
+    return response
+
+
+def _put(token, uri, data, content_type='application/json'):
+    headers = {
+        'Content-Type': content_type,
+        'Accept': content_type,
+        'Authorization': 'Bearer ' + token
+    }
+
+    r = put(settings.API_ENDPOINT + uri, data=json.dumps(data), headers=headers)
 
     response = ''
     for chunk in r.iter_content():
