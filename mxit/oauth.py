@@ -47,6 +47,9 @@ class OAuth():
     def get_user_token(self, scope, code=None):
         """Gets the auth token from a user's response"""
 
+        if self.__user_token:
+            return self.__user_token
+
         if self.__cache is not None:
             token = self.__cache.get(self.__user_token_cache_key())
             if token:
@@ -80,6 +83,9 @@ class OAuth():
 
     def get_app_token(self, scope):
         """Gets the app auth token"""
+
+        if self.__app_token:
+            return self.__app_token
 
         if self.__cache is not None:
             token = self.__cache.get(self.__app_token_cache_key())
