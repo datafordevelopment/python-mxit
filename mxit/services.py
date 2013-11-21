@@ -47,7 +47,11 @@ class MessagingService(BaseService):
 
 class UserService(BaseService):
 
-    def user_id(self, mxit_id):
+    def get_user_id(self, mxit_id):
+        """
+        Retrieve the Mxit user's internal "user ID"
+        No user authentication required
+        """
         user_id = _get(
             token=self.oauth.get_app_token('profile/public'),
             uri='/user/lookup/' + urllib.quote(mxit_id)
@@ -58,7 +62,11 @@ class UserService(BaseService):
 
         return user_id
 
-    def status(self, mxit_id):
+    def get_status(self, mxit_id):
+        """
+        Retrieve the Mxit user's current status
+        No user authentication required
+        """
         status = _get(
             token=self.oauth.get_app_token('profile/public'),
             uri='/user/public/statusmessage/' + urllib.quote(mxit_id)
@@ -69,7 +77,18 @@ class UserService(BaseService):
 
         return status
 
-    def display_name(self, mxit_id):
+    def set_status(self, message):
+        """
+        Set the Mxit user's status
+        User authentication required with the following scope: 'status/write'
+        """
+        raise NotImplementedError()
+
+    def get_display_name(self, mxit_id):
+        """
+        Retrieve the Mxit user's display name
+        No user authentication required
+        """
         display_name = _get(
             token=self.oauth.get_app_token('profile/public'),
             uri='/user/public/displayname/' + urllib.quote(mxit_id)
@@ -80,13 +99,35 @@ class UserService(BaseService):
 
         return display_name
 
-    def avatar(self, mxit_id):
+    def get_avatar(self, mxit_id):
+        """
+        Retrieve the Mxit user's avatar
+        No user authentication required
+        """
         return _get(
             token=self.oauth.get_app_token('profile/public'),
             uri='/user/public/avatar/' + urllib.quote(mxit_id)
         )
 
-    def basic_profile(self, user_id):
+    def set_avatar(self, data, mime_type='application/octet-stream'):
+        """
+        Set the Mxit user's avatar
+        User authentication required with the following scope: 'avatar/write'
+        """
+        raise NotImplementedError()
+
+    def delete_avatar(self):
+        """
+        Delete the Mxit user's avatar
+        User authentication required with the following scope: 'avatar/write'
+        """
+        raise NotImplementedError()
+
+    def get_basic_profile(self, user_id):
+        """
+        Retrieve the Mxit user's basic profile
+        No user authentication required
+        """
         profile = _get(
             token=self.oauth.get_app_token('profile/public'),
             uri='/user/profile/' + urllib.quote(user_id)
@@ -96,6 +137,49 @@ class UserService(BaseService):
             return json.loads(profile)
         except:
             raise MxitAPIException('Error parsing profile data')
+
+    def get_full_profile(self):
+        """
+        Retrieve the Mxit user's full profile
+        User authentication required with the following scope: 'profile/private'
+        """
+        profile = _get(
+            token=self.oauth.get_user_token('profile/public'),
+            uri='/user/profile'
+        )
+
+        try:
+            return json.loads(profile)
+        except:
+            raise MxitAPIException('Error parsing profile data')
+
+    def update_profile(self, data):
+        """
+        Update the Mxit user's profile
+        User authentication required with the following scope: 'profile/write'
+        """
+        raise NotImplementedError()
+
+    def add_contact(self, user_id):
+        """
+        Retrieve the Mxit user's full profile
+        User authentication required with the following scope: 'contact/invite'
+        """
+        raise NotImplementedError()
+
+    def get_contact_list(self, list_filter, skip=0, count=0):
+        """
+        Retrieve the Mxit user's full profile
+        User authentication required with the following scope: 'graph/read'
+        """
+        raise NotImplementedError()
+
+    def get_friend_suggestions(self):
+        """
+        Retrieve the Mxit user's full profile
+        User authentication required with the following scope: 'graph/read'
+        """
+        raise NotImplementedError()
 
 
 # HTTP helper methods
