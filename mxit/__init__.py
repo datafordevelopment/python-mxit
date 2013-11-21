@@ -1,2 +1,1 @@
-from base import MxitAPIBase
-
+from client import Mxit
