@@ -102,15 +102,21 @@ class UserService(BaseService):
 
         return display_name
 
-    def get_avatar(self, mxit_id, scope='profile/public'):
+    def get_avatar(self, mxit_id, output_file_path=None, scope='profile/public'):
         """
         Retrieve the Mxit user's avatar
         No user authentication required
         """
-        return _get(
+        data = _get(
             token=self.oauth.get_app_token(scope),
             uri='/user/public/avatar/' + urllib.quote(mxit_id)
         )
+
+        if output_file_path:
+            with open(output_file_path, 'w') as f:
+                f.write(data)
+        else:
+            return data
 
     def set_avatar(self, data, mime_type='application/octet-stream'):
         """
