@@ -83,7 +83,7 @@ class UserService(BaseService):
         return _put(
             token=self.oauth.get_user_token(scope),
             uri='/user/statusmessage',
-            data=json.dumps(message)
+            data=message
         )
 
     def get_display_name(self, mxit_id, scope='profile/public'):
@@ -214,12 +214,16 @@ class UserService(BaseService):
                 data=data
             )
 
-    def add_contact(self, user_id, scope='contact/invite'):
+    def add_contact(self, contact_id, scope='contact/invite'):
         """
         Add a contact
+        contact_id can either be the mxit ID of a service or a Mxit user
         User authentication required with the following scope: 'contact/invite'
         """
-        raise NotImplementedError()
+        return _put(
+            token=self.oauth.get_user_token(scope),
+            uri='/user/socialgraph/contact/' + urllib.quote(contact_id)
+        )
 
     def get_contact_list(self, list_filter, skip=None, count=None, scope='graph/read'):
         """
@@ -294,7 +298,7 @@ def _get(token, uri, content_type='application/json'):
     return response
 
 
-def _post(token, uri, data, content_type='application/json'):
+def _post(token, uri, data={}, content_type='application/json'):
     headers = {
         'Content-Type': content_type,
         'Accept': content_type,
@@ -316,7 +320,7 @@ def _post(token, uri, data, content_type='application/json'):
     return response
 
 
-def _put(token, uri, data, content_type='application/json'):
+def _put(token, uri, data={}, content_type='application/json'):
     headers = {
         'Content-Type': content_type,
         'Accept': content_type,
