@@ -11,7 +11,6 @@ class BaseService():
 
 
 class MessagingService(BaseService):
-
     def send_message(self, app_mxit_id, target_user_ids, message='', contains_markup=True, scope='message/send'):
         """
         Send a message (from a Mxit app) to a list of Mxit users
@@ -28,7 +27,8 @@ class MessagingService(BaseService):
             }
         )
 
-    def send_user_to_user_message(self, from_user_id, target_user_ids, message='', contains_markup=True, scope='message/user'):
+    def send_user_to_user_message(self, from_user_id, target_user_ids, message='', contains_markup=True,
+                                  scope='message/user'):
         """
         Send a message (from a Mxit app) to a list of Mxit users
         """
@@ -45,7 +45,6 @@ class MessagingService(BaseService):
 
 
 class UserService(BaseService):
-
     def get_user_id(self, mxit_id, scope='profile/public'):
         """
         Retrieve the Mxit user's internal "user ID"
@@ -118,7 +117,8 @@ class UserService(BaseService):
         else:
             return data
 
-    def set_avatar(self, data=None, input_file_path=None, scope='avatar/write', content_type='application/octet-stream'):
+    def set_avatar(self, data=None, input_file_path=None, scope='avatar/write',
+                   content_type='application/octet-stream'):
         """
         Set the Mxit user's avatar
         User authentication required with the following scope: 'avatar/write'
@@ -177,12 +177,42 @@ class UserService(BaseService):
         except:
             raise MxitAPIException('Error parsing profile data')
 
-    def update_profile(self, data, scope='profile/write'):
+    def update_profile(self, about_me=None, display_name=None, email=None, first_name=None, gender=None, last_name=None,
+                       mobile_number=None, relationship_status=None, title=None, where_am_i=None,
+                       scope='profile/write'):
         """
         Update the Mxit user's profile
         User authentication required with the following scope: 'profile/write'
         """
-        raise NotImplementedError()
+
+        data = {}
+        if about_me:
+            data['AboutMe'] = about_me
+        if display_name:
+            data['DisplayName'] = display_name
+        if email:
+            data['Email'] = email
+        if first_name:
+            data['FirstName'] = first_name
+        if gender:
+            data['Gender'] = gender
+        if last_name:
+            data['LastName'] = last_name
+        if mobile_number:
+            data['MobileNumber'] = mobile_number
+        if relationship_status:
+            data['RelationshipStatus'] = relationship_status
+        if title:
+            data['Title'] = title
+        if where_am_i:
+            data['WhereAmI'] = where_am_i
+
+        if data:
+            _put(
+                token=self.oauth.get_user_token(scope),
+                uri='/user/profile',
+                data=data
+            )
 
     def add_contact(self, user_id, scope='contact/invite'):
         """
@@ -233,15 +263,15 @@ class UserService(BaseService):
 # Helpers
 
 CONTACT_LIST_FILTER = {
-    'all':          '@All',
-    'friends':      '@Friends',
-    'apps':         '@Apps',
-    'invites':      '@Invites',
-    'connections':  '@Connections',
-    'rejected':     '@Rejected',
-    'pending':      '@Pending',
-    'deleted':      '@Deleted',
-    'blocked':      '@Blocked',
+    'all': '@All',
+    'friends': '@Friends',
+    'apps': '@Apps',
+    'invites': '@Invites',
+    'connections': '@Connections',
+    'rejected': '@Rejected',
+    'pending': '@Pending',
+    'deleted': '@Deleted',
+    'blocked': '@Blocked',
 }
 
 
