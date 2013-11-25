@@ -1,6 +1,6 @@
 import json
 import urllib
-from requests import get, post, put
+from requests import get, post, put, delete
 from mxit import settings
 from mxit.exceptions import MxitAPIException
 
@@ -142,7 +142,10 @@ class UserService(BaseService):
         Delete the Mxit user's avatar
         User authentication required with the following scope: 'avatar/write'
         """
-        raise NotImplementedError()
+        _delete(
+            token=self.oauth.get_user_token(scope),
+            uri='/user/avatar'
+        )
 
     def get_basic_profile(self, user_id, scope='profile/public'):
         """
@@ -294,6 +297,25 @@ def _put(token, uri, data, content_type='application/json'):
         data = json.dumps(data)
 
     r = put(settings.API_ENDPOINT + uri, data=data, headers=headers)
+
+    response = ''
+    for chunk in r.iter_content():
+        response += chunk
+
+    if r.status_code != 200:
+        raise MxitAPIException("Unexpected HTTP Status: %s" % r.status_code, {'response': response})
+
+    return response
+
+
+def _delete(token, uri, content_type='application/json'):
+    headers = {
+        'Content-Type': content_type,
+        'Accept': content_type,
+        'Authorization': 'Bearer ' + token
+    }
+
+    r = delete(settings.API_ENDPOINT + uri, headers=headers)
 
     response = ''
     for chunk in r.iter_content():
