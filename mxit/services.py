@@ -320,7 +320,11 @@ class UserService(BaseService):
         Rename a file in the Mxit user's gallery
         User authentication required with the following scope: 'content/write'
         """
-        raise NotImplementedError()
+        return _put(
+            token=self.oauth.get_user_token(scope),
+            uri='/user/media/file/' + urllib.quote(file_id),
+            data=new_file_name
+        )
 
     def upload_gallery_file(self, folder_name, file_name, data=None, input_file_path=None, content_type="image/png",
                             scope='content/write'):
