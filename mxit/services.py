@@ -292,7 +292,10 @@ class UserService(BaseService):
         Delete a folder in the Mxit user's gallery
         User authentication required with the following scope: 'content/write'
         """
-        raise NotImplementedError()
+        return _delete(
+            token=self.oauth.get_user_token(scope),
+            uri='/user/media/' + urllib.quote(folder_name)
+        )
 
     def rename_gallery_folder(self, old_folder_name, new_folder_name, scope='content/write'):
         """
