@@ -313,7 +313,10 @@ class UserService(BaseService):
         Delete a file in the Mxit user's gallery
         User authentication required with the following scope: 'content/write'
         """
-        raise NotImplementedError()
+        return _delete(
+            token=self.oauth.get_user_token(scope),
+            uri='/user/media/file/' + urllib.quote(file_id)
+        )
 
     def rename_gallery_file(self, file_id, new_file_name, scope='content/write'):
         """
