@@ -302,7 +302,11 @@ class UserService(BaseService):
         Rename a folder in the Mxit user's gallery
         User authentication required with the following scope: 'content/write'
         """
-        raise NotImplementedError()
+        return _put(
+            token=self.oauth.get_user_token(scope),
+            uri='/user/media/' + urllib.quote(old_folder_name),
+            data=new_folder_name
+        )
 
     def delete_gallery_file(self, file_id, scope='content/write'):
         """
