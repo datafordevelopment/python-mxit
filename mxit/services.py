@@ -282,7 +282,10 @@ class UserService(BaseService):
         Create a new folder in the Mxit user's gallery
         User authentication required with the following scope: 'content/write'
         """
-        raise NotImplementedError()
+        return _post(
+            token=self.oauth.get_user_token(scope),
+            uri='/user/media/' + urllib.quote(folder_name)
+        )
 
     def delete_gallery_folder(self, folder_name, scope='content/write'):
         """
