@@ -18,7 +18,7 @@ class MessagingService(BaseService):
 
         return _post(
             token=self.oauth.get_app_token(scope),
-            uri='/message/send/',
+            uri='/message/send',
             data={
                 'From': app_mxit_id,
                 'To': ",".join(target_user_ids),
@@ -34,7 +34,7 @@ class MessagingService(BaseService):
         """
         return _post(
             token=self.oauth.get_user_token(scope),
-            uri='/message/send/',
+            uri='/message/send',
             data={
                 'From': from_user_id,
                 'To': ",".join(target_user_ids),
