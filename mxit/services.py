@@ -322,26 +322,64 @@ class UserService(BaseService):
         """
         raise NotImplementedError()
 
-    def upload_gallery_file(self, folder_name, file_name, scope='content/write'):
+    def upload_gallery_file(self, folder_name, file_name, data=None, input_file_path=None, content_type="image/png",
+                            scope='content/write'):
         """
         Upload a file to a folder in the Mxit user's gallery
         User authentication required with the following scope: 'content/write'
         """
-        raise NotImplementedError()
+        if input_file_path:
+            with open(input_file_path, 'rb') as f:
+                data = f.read()
+
+        if not data:
+            raise ValueError('Either the data of a file or the path to a file must be provided')
+
+        return _post(
+            token=self.oauth.get_user_token(scope),
+            uri='/user/media/file/' + urllib.quote(folder_name) + '?fileName=' + urllib.quote(file_name),
+            data=data,
+            content_type=content_type,
+        )
 
     def get_gallery_item_list(self, folder_name, skip=None, count=None, scope='content/read'):
         """
         Get the item listing in a given folder in the Mxit user's gallery
         User authentication required with the following scope: 'content/read'
         """
-        raise NotImplementedError()
 
-    def get_gallery_file(self, scope='content/read'):
+        params = {}
+        if skip:
+            params['skip'] = skip
+        if count:
+            params['count'] = count
+
+        qs = '?' + urllib.urlencode(params) if params else ''
+
+        folder_item_list = _get(
+            token=self.oauth.get_user_token(scope),
+            uri='/user/media/list/' + urllib.quote(folder_name) + qs
+        )
+        try:
+            return json.loads(folder_item_list)
+        except:
+            raise MxitAPIException('Error parsing gallery folder list')
+
+    def get_gallery_file(self, file_id, output_file_path=None, scope='content/read'):
         """
         Get a file in the Mxit user's gallery
         User authentication required with the following scope: 'content/read'
         """
-        raise NotImplementedError()
+        data = _get(
+            token=self.oauth.get_user_token(scope),
+            uri='/user/media/content/' + urllib.quote(file_id)
+        )
+
+        if output_file_path:
+            with open(output_file_path, 'w') as f:
+                f.write(data)
+        else:
+            return data
 
 
 # Helpers
