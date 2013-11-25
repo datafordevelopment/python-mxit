@@ -263,6 +263,76 @@ class UserService(BaseService):
         except:
             raise MxitAPIException('Error parsing suggestions data')
 
+    def get_gallery_folder_list(self, scope='content/read'):
+        """
+        Retrieve a list of the Mxit user's gallery folders
+        User authentication required with the following scope: 'content/read'
+        """
+        folder_list = _get(
+            token=self.oauth.get_user_token(scope),
+            uri='/user/media'
+        )
+        try:
+            return json.loads(folder_list)
+        except:
+            raise MxitAPIException('Error parsing gallery folder list')
+
+    def create_gallery_folder(self, folder_name, scope='content/write'):
+        """
+        Create a new folder in the Mxit user's gallery
+        User authentication required with the following scope: 'content/write'
+        """
+        raise NotImplementedError()
+
+    def delete_gallery_folder(self, folder_name, scope='content/write'):
+        """
+        Delete a folder in the Mxit user's gallery
+        User authentication required with the following scope: 'content/write'
+        """
+        raise NotImplementedError()
+
+    def rename_gallery_folder(self, old_folder_name, new_folder_name, scope='content/write'):
+        """
+        Rename a folder in the Mxit user's gallery
+        User authentication required with the following scope: 'content/write'
+        """
+        raise NotImplementedError()
+
+    def delete_gallery_file(self, file_id, scope='content/write'):
+        """
+        Delete a file in the Mxit user's gallery
+        User authentication required with the following scope: 'content/write'
+        """
+        raise NotImplementedError()
+
+    def rename_gallery_file(self, file_id, new_file_name, scope='content/write'):
+        """
+        Rename a file in the Mxit user's gallery
+        User authentication required with the following scope: 'content/write'
+        """
+        raise NotImplementedError()
+
+    def upload_gallery_file(self, folder_name, file_name, scope='content/write'):
+        """
+        Upload a file to a folder in the Mxit user's gallery
+        User authentication required with the following scope: 'content/write'
+        """
+        raise NotImplementedError()
+
+    def get_gallery_item_list(self, folder_name, skip=None, count=None, scope='content/read'):
+        """
+        Get the item listing in a given folder in the Mxit user's gallery
+        User authentication required with the following scope: 'content/read'
+        """
+        raise NotImplementedError()
+
+    def get_gallery_file(self, scope='content/read'):
+        """
+        Get a file in the Mxit user's gallery
+        User authentication required with the following scope: 'content/read'
+        """
+        raise NotImplementedError()
+
 
 # Helpers
 
