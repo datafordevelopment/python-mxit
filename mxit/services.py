@@ -404,14 +404,14 @@ CONTACT_LIST_FILTER = {
 }
 
 
-def _get(token, uri, content_type='application/json'):
+def _get(token, uri, content_type='application/json', api_endpoint=settings.API_ENDPOINT):
     headers = {
         'Content-Type': content_type,
         'Accept': content_type,
         'Authorization': 'Bearer ' + token
     }
 
-    r = get(settings.API_ENDPOINT + uri, headers=headers)
+    r = get(api_endpoint + uri, headers=headers)
 
     response = ''
     for chunk in r.iter_content():
@@ -423,7 +423,7 @@ def _get(token, uri, content_type='application/json'):
     return response
 
 
-def _post(token, uri, data={}, content_type='application/json'):
+def _post(token, uri, data={}, content_type='application/json', api_endpoint=settings.API_ENDPOINT):
     headers = {
         'Content-Type': content_type,
         'Accept': content_type,
@@ -433,7 +433,7 @@ def _post(token, uri, data={}, content_type='application/json'):
     if 'json' in content_type:
         data = json.dumps(data)
 
-    r = post(settings.API_ENDPOINT + uri, data=data, headers=headers)
+    r = post(api_endpoint + uri, data=data, headers=headers)
 
     response = ''
     for chunk in r.iter_content():
@@ -445,7 +445,7 @@ def _post(token, uri, data={}, content_type='application/json'):
     return response
 
 
-def _put(token, uri, data={}, content_type='application/json'):
+def _put(token, uri, data={}, content_type='application/json', api_endpoint=settings.API_ENDPOINT):
     headers = {
         'Content-Type': content_type,
         'Accept': content_type,
@@ -455,7 +455,7 @@ def _put(token, uri, data={}, content_type='application/json'):
     if 'json' in content_type:
         data = json.dumps(data)
 
-    r = put(settings.API_ENDPOINT + uri, data=data, headers=headers)
+    r = put(api_endpoint + uri, data=data, headers=headers)
 
     response = ''
     for chunk in r.iter_content():
@@ -467,14 +467,14 @@ def _put(token, uri, data={}, content_type='application/json'):
     return response
 
 
-def _delete(token, uri, content_type='application/json'):
+def _delete(token, uri, content_type='application/json', api_endpoint=settings.API_ENDPOINT):
     headers = {
         'Content-Type': content_type,
         'Accept': content_type,
         'Authorization': 'Bearer ' + token
     }
 
-    r = delete(settings.API_ENDPOINT + uri, headers=headers)
+    r = delete(api_endpoint + uri, headers=headers)
 
     response = ''
     for chunk in r.iter_content():
