@@ -118,12 +118,24 @@ class UserService(BaseService):
         else:
             return data
 
-    def set_avatar(self, data, mime_type='application/octet-stream'):
+    def set_avatar(self, data=None, input_file_path=None, scope='avatar/write', content_type='application/octet-stream'):
         """
         Set the Mxit user's avatar
         User authentication required with the following scope: 'avatar/write'
         """
-        raise NotImplementedError()
+        if input_file_path:
+            with open(input_file_path, 'rb') as f:
+                data = f.read()
+
+        if not data:
+            raise ValueError('Either the data of an image file or the path to an image file must be provided')
+
+        return _post(
+            token=self.oauth.get_user_token(scope),
+            uri='/user/avatar',
+            data=data,
+            content_type=content_type,
+        )
 
     def delete_avatar(self, scope='avatar/write'):
         """
@@ -256,7 +268,10 @@ def _post(token, uri, data, content_type='application/json'):
         'Authorization': 'Bearer ' + token
     }
 
-    r = post(settings.API_ENDPOINT + uri, data=json.dumps(data), headers=headers)
+    if 'json' in content_type:
+        data = json.dumps(data)
+
+    r = post(settings.API_ENDPOINT + uri, data=data, headers=headers)
 
     response = ''
     for chunk in r.iter_content():
@@ -275,7 +290,10 @@ def _put(token, uri, data, content_type='application/json'):
         'Authorization': 'Bearer ' + token
     }
 
-    r = put(settings.API_ENDPOINT + uri, data=json.dumps(data), headers=headers)
+    if 'json' in content_type:
+        data = json.dumps(data)
+
+    r = put(settings.API_ENDPOINT + uri, data=data, headers=headers)
 
     response = ''
     for chunk in r.iter_content():
