@@ -39,7 +39,7 @@ client.oauth.get_user_token(SCOPE, RECEIVED_CODE)
 	
 From here the client has access to the api calls allowed by the specified *scope*.
 
-### Messaging API
+### [Messaging API](https://dev.mxit.com/docs/restapi/messaging)
 
 #### send_message
 
@@ -88,7 +88,7 @@ client.oauth.get_user_token("message/user", RECEIVED_AUTH_CODE)
 client.messaging.send_user_to_user_message("example_mxit_user_id", ["mxit_user_id_1", "mxit_user_id_2" ], "This is a test user to user message")
 ```
 
-### User API
+### [User API](https://dev.mxit.com/docs/restapi/user])
 
 #### get_user_id
 
