@@ -38,8 +38,7 @@ class TestUserAuthenticatedProfileApiCalls(TestUserAuthenticatedApiCalls):
         self.assertIsInstance(profile['Email'], basestring)
 
     def test_update_profile(self):
-        print('Please enter a new "about me" section ("s" to skip this test):')
-        new_about_me = raw_input()
+        new_about_me = raw_input('Please enter a new "about me" section ("s" to skip this test): ')
 
         if new_about_me == "s":
             return
@@ -52,8 +51,7 @@ class TestUserAuthenticatedProfileApiCalls(TestUserAuthenticatedApiCalls):
         self.assertEqual(new_about_me, updated_profile['AboutMe'])
 
     def test_update_status(self):
-        print('Please enter a new status message ("s" to skip this test):')
-        new_status = raw_input()
+        new_status = raw_input('Please enter a new status message ("s" to skip this test): ')
 
         if new_status == "s":
             return
@@ -87,8 +85,7 @@ class TestSocialGraphApiCalls(TestUserAuthenticatedApiCalls):
         self.assertIsInstance(suggestions, list)
 
     def test_add_contact(self):
-        print('Please enter Mxit ID of contact to add ("s" to skip this test):')
-        contact_id = raw_input()
+        contact_id = raw_input('Please enter Mxit ID of contact to add ("s" to skip this test): ')
 
         if contact_id == "s":
             return
