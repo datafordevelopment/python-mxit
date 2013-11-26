@@ -246,9 +246,76 @@ client.users.delete_avatar()
 
 #### get_basic_profile
 
+Retrieve the Mxit user's basic profile
+
+*User authentication required*: **NO**
+
+##### Parameters
+
+* *user_id* (**required**)
+* *scope* (**optional**)
+
+##### Example
+
+```python
+from mxit import Mxit
+	
+client = Mxit(MXIT_CLIENT_ID, MXIT_CLIENT_SECRET)
+	
+basic_profile = client.users.get_basic_profile("example_user_id")
+```
+
 #### get_full_profile
 
+Retrieve the Mxit user's full profile
+
+*User authentication required*: **YES**
+
+##### Parameters
+
+* *scope* (**optional**)
+
+##### Example
+
+```python
+from mxit import Mxit
+	
+client = Mxit(MXIT_CLIENT_ID, MXIT_CLIENT_SECRET, redirect_uri="http://example.org")
+	
+client.oauth.get_user_token("profile/private", RECEIVED_AUTH_CODE)
+full_profile = client.users.get_full_profile()
+```
+
 #### update_profile
+
+Update the Mxit user's profile
+
+*User authentication required*: **YES**
+
+##### Parameters
+
+* *about_me* (**optional**)
+* *display_name* (**optional**)
+* *email* (**optional**)
+* *first_name* (**optional**)
+* *gender* (**optional**)
+* *last_name* (**optional**)
+* *mobile_number* (**optional**)
+* *relationship_status* (**optional**)
+* *title* (**optional**)
+* *where_am_i* (**optional**)
+* *scope* (**optional**)
+
+##### Example
+
+```python
+from mxit import Mxit
+	
+client = Mxit(MXIT_CLIENT_ID, MXIT_CLIENT_SECRET, redirect_uri="http://example.org")
+	
+client.oauth.get_user_token("profile/write", RECEIVED_AUTH_CODE)
+client.users.update_profile(email="test@test.com", relationship_status=3)
+```
 
 #### add_contact
 
