@@ -30,7 +30,7 @@ class MessagingService(BaseService):
     def send_user_to_user_message(self, from_user_id, target_user_ids, message='', contains_markup=True,
                                   scope='message/user'):
         """
-        Send a message (from a Mxit app) to a list of Mxit users
+        Send a message (from a Mxit user) to a list of Mxit users
         """
         return _post(
             token=self.oauth.get_user_token(scope),

@@ -37,7 +37,7 @@ From here the client has access to the api calls allowed by the specified *scope
 
 Send a message (from a Mxit app) to a list of Mxit users
 
-*User authentication required:* **NO**
+*User authentication required*: **NO**
 
 ##### Parameters
 * *app_mxit_id* (**required**)
@@ -56,15 +56,102 @@ Send a message (from a Mxit app) to a list of Mxit users
 
 #### send_user_to_user_message
 
+Send a message (from a Mxit user) to a list of Mxit users
+
+*User authentication required*: **YES**
+
+##### Parameters
+* *from_user_id* (**required**)
+* *target_user_ids* (**required**)
+* *message* (**required**)
+* *contains_markup* (**optional**)
+* *scope* (**optional**)
+
+##### Example
+
+	from mxit import Mxit
+	
+	client = Mxit(MXIT_CLIENT_ID, MXIT_CLIENT_SECRET, redirect_uri="http://example.org")
+	
+	client.oauth.get_user_token("message/user", RECEIVED_AUTH_CODE)
+	client.messaging.send_user_to_user_message("example_mxit_user_id", ["mxit_user_id_1", "mxit_user_id_2" ], "This is a test user to user message")
+
 ### User API
 
 #### get_user_id
 
+Retrieve the Mxit user's internal "user ID"
+
+*User authentication required*: **NO**
+
+##### Parameters
+* *mxit_id* (**required**)
+* *scope* (**optional**)
+
+##### Example
+
+	from mxit import Mxit
+	
+	client = Mxit(MXIT_CLIENT_ID, MXIT_CLIENT_SECRET)
+	
+	user_id = client.users.get_user_id("example_mxit_id")
+
+
 #### get_status
+
+Retrieve the Mxit user's current status
+
+*User authentication required*: **NO**
+
+##### Parameters
+* *mxit_id* (**required**)
+* *scope* (**optional**)
+
+##### Example
+
+	from mxit import Mxit
+	
+	client = Mxit(MXIT_CLIENT_ID, MXIT_CLIENT_SECRET)
+	
+	status = client.users.get_status("example_mxit_id")
 
 #### set_status
 
+Set the Mxit user's status
+
+*User authentication required*: **YES**
+
+##### Parameters
+* *message* (**required**)
+* *scope* (**optional**)
+
+##### Example
+
+	from mxit import Mxit
+	
+	client = Mxit(MXIT_CLIENT_ID, MXIT_CLIENT_SECRET, redirect_uri="http://example.org")
+	
+	client.oauth.get_user_token("status/write", RECEIVED_AUTH_CODE)
+	client.users.set_status("Some awesome status")
+
 #### get_display_name
+
+Retrieve the Mxit user's display name
+
+*User authentication required*: **NO**
+
+##### Parameters
+* *mxit_id* (**required**)
+* *scope* (**optional**)
+
+##### Example
+
+	from mxit import Mxit
+	
+	client = Mxit(MXIT_CLIENT_ID, MXIT_CLIENT_SECRET)
+	
+	display_name = client.users.get_display_name("example_mxit_id")
+
 
 #### get_avatar
 
