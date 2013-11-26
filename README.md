@@ -173,9 +173,76 @@ display_name = client.users.get_display_name("example_mxit_id")
 
 #### get_avatar
 
+Retrieve the Mxit user's avatar
+
+*User authentication required*: **NO**
+
+##### Parameters
+
+If *output_file_path* is set, the file will be saved at that path, otherwise the file data will be returned.
+
+* *mxit_id* (**required**)
+* *output_file_path* (**optional**)
+* *scope* (**optional**)
+
+##### Example
+
+```python
+from mxit import Mxit
+	
+client = Mxit(MXIT_CLIENT_ID, MXIT_CLIENT_SECRET)
+	
+client.users.get_avatar("example_mxit_id", output_file_path="/path/to/avatar.png")
+data = client.users.get_avatar("example_mxit_id")
+```
+
+
 #### set_avatar
 
+Set the Mxit user's avatar
+
+*User authentication required*: **YES**
+
+##### Parameters
+
+The avatar can either be sent as a bytestream in *data* or as a filepath in *input_file_path*.
+
+* *data* (**optional**)
+* *input_file_path* (**optional**)
+* *content_type* (**optional**)
+* *scope* (**optional**)
+
+##### Example
+
+```python
+from mxit import Mxit
+	
+client = Mxit(MXIT_CLIENT_ID, MXIT_CLIENT_SECRET, redirect_uri="http://example.org")
+	
+client.oauth.get_user_token("avatar/write", RECEIVED_AUTH_CODE)
+client.users.set_avatar(input_file_path="/path/to/avatar.png")
+```
+
 #### delete_avatar
+
+Delete the Mxit user's avatar
+
+*User authentication required*: **YES**
+
+##### Parameters
+
+* *scope* (**optional**)
+
+##### Example
+
+```python
+from mxit import Mxit
+	
+client = Mxit(MXIT_CLIENT_ID, MXIT_CLIENT_SECRET, redirect_uri="http://example.org")
+	
+client.oauth.get_user_token("avatar/write", RECEIVED_AUTH_CODE)
+client.users.delete_avatar()
+```
 
 #### get_basic_profile
 
