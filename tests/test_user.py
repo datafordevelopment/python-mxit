@@ -95,4 +95,30 @@ class TestSocialGraphApiCalls(TestUserAuthenticatedApiCalls):
 
 
 class TestMediaApiCalls(TestUserAuthenticatedApiCalls):
-    pass
+
+    def test_get_gallery_folder_list(self):
+        pass
+
+    def test_create_gallery_folder(self):
+        pass
+
+    def test_delete_gallery_folder(self):
+        pass
+
+    def test_rename_gallery_folder(self):
+        pass
+
+    def test_delete_gallery_file(self):
+        pass
+
+    def test_rename_gallery_file(self):
+        pass
+
+    def test_upload_gallery_file(self):
+        pass
+    
+    def test_get_gallery_item_list(self):
+        pass
+
+    def test_get_gallery_file(self):
+        pass
