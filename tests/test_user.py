@@ -5,7 +5,6 @@ from tests.test_base import TestPublicApiCalls, TestUserAuthenticatedApiCalls
 
 
 class TestPublicProfileApiCalls(TestPublicApiCalls):
-
     def test_get_user_id(self):
         user_id = self.client.users.get_user_id(settings.MXIT_USERNAME)
         self.assertIsInstance(user_id, basestring)
@@ -31,7 +30,6 @@ class TestPublicProfileApiCalls(TestPublicApiCalls):
 
 
 class TestUserAuthenticatedProfileApiCalls(TestUserAuthenticatedApiCalls):
-
     def test_get_full_profile(self):
         self.auth('profile/private')
         profile = self.client.users.get_full_profile()
@@ -73,7 +71,6 @@ class TestUserAuthenticatedProfileApiCalls(TestUserAuthenticatedApiCalls):
 
 
 class TestSocialGraphApiCalls(TestUserAuthenticatedApiCalls):
-
     def test_get_contact_list(self):
         self.auth('graph/read')
         contact_list = self.client.users.get_contact_list(mxit.services.CONTACT_LIST_FILTER['all'])
@@ -95,30 +92,148 @@ class TestSocialGraphApiCalls(TestUserAuthenticatedApiCalls):
 
 
 class TestMediaApiCalls(TestUserAuthenticatedApiCalls):
-
     def test_get_gallery_folder_list(self):
-        pass
+        self.auth('content/read')
+        gallery_folder_list = self.client.users.get_gallery_folder_list()
+        self.assertIsNotNone(gallery_folder_list['Folders'])
+        print gallery_folder_list['Folders']
 
     def test_create_gallery_folder(self):
-        pass
+        folder_name = raw_input('Please enter the name of the folder to be created ("s" to skip this test): ')
+
+        if folder_name == "s":
+            return
+
+        self.auth('content/write')
+        self.client.users.create_gallery_folder(folder_name)
 
     def test_delete_gallery_folder(self):
-        pass
+        folder_name = raw_input('Please enter the name of the folder to be deleted ("s" to skip this test): ')
+
+        if folder_name == "s":
+            return
+
+        self.auth('content/write')
+        self.client.users.delete_gallery_folder(folder_name)
 
     def test_rename_gallery_folder(self):
-        pass
+        old_folder_name = raw_input('Please enter the name of the folder to be renamed ("s" to skip this test): ')
 
-    def test_delete_gallery_file(self):
-        pass
+        if old_folder_name == "s":
+            return
 
-    def test_rename_gallery_file(self):
-        pass
+        new_folder_name = raw_input('Please enter the new name of the folder: ')
+
+        self.auth('content/write')
+        self.client.users.rename_gallery_folder(old_folder_name, new_folder_name)
+
+    def test_get_gallery_item_list(self):
+        folder_name = raw_input(
+            'Please enter the name of the folder for which the file list must be fetched ("s" to skip this test): ')
+
+        if folder_name == "s":
+            return
+
+        self.auth('content/read')
+        item_list = self.client.users.get_gallery_item_list(folder_name)
+        self.assertIsInstance(item_list, list)
+        if not item_list:
+            print "No items in this folder"
+            return
+        print "Item List"
+        print "=============================="
+        for item in item_list:
+            print item["FileName"]
 
     def test_upload_gallery_file(self):
-        pass
-    
-    def test_get_gallery_item_list(self):
-        pass
+        folder_name = raw_input(
+            'Please enter the name of the folder to add and remove file from ("s" to skip this test): ')
+
+        if folder_name == "s":
+            return
+
+        file_name = raw_input('Please enter a name to give the uploaded file: ')
+
+        self.auth('content/write')
+        self.client.users.upload_gallery_file(folder_name, file_name,
+                                              input_file_path=settings.ABSOLUTE_PATH_TO_PNG_IMAGE)
+
+    def test_delete_gallery_file(self):
+        folder_name = raw_input(
+            'Please enter the name of the folder to remove a file from ("s" to skip this test): ')
+
+        if folder_name == "s":
+            return
+
+        self.auth('content/read content/write')
+        item_list = self.client.users.get_gallery_item_list(folder_name)
+        item_list_hash = {}
+        if not item_list:
+            print "No items in this folder"
+            return
+        print "Item List"
+        print "=============================="
+        for item in item_list:
+            item_list_hash[item["FileName"]] = item["FileId"]
+            print item["FileName"]
+
+        file_name = raw_input('Please enter the name of the file to be deleted: ')
+        if file_name in item_list_hash:
+            self.client.users.delete_gallery_file(item_list_hash[file_name])
+            print file_name + ' deleted'
+        else:
+            print 'Filename specified not in folder'
 
     def test_get_gallery_file(self):
-        pass
+        folder_name = raw_input(
+            'Please enter the name of the folder where the file is in ("s" to skip this test): ')
+
+        if folder_name == "s":
+            return
+
+        self.auth('content/read content/write')
+        item_list = self.client.users.get_gallery_item_list(folder_name)
+        item_list_hash = {}
+        if not item_list:
+            print "No items in this folder"
+            return
+        print "Item List"
+        print "=============================="
+        for item in item_list:
+            item_list_hash[item["FileName"]] = item["FileId"]
+            print item["FileName"]
+
+        file_name = raw_input('Please enter the name of the file to fetch: ')
+        if file_name in item_list_hash:
+            file_data = self.client.users.get_gallery_file(item_list_hash[file_name])
+            self.assertTrue(len(file_data) > 0)
+            print 'File received successfully'
+        else:
+            print 'Filename specified not in folder'
+
+    def test_rename_gallery_file(self):
+        folder_name = raw_input(
+            'Please enter the name of the folder where the file is in ("s" to skip this test): ')
+
+        if folder_name == "s":
+            return
+
+        self.auth('content/read content/write')
+        item_list = self.client.users.get_gallery_item_list(folder_name)
+        item_list_hash = {}
+        if not item_list:
+            print "No items in this folder"
+            return
+        print "Item List"
+        print "=============================="
+        for item in item_list:
+            item_list_hash[item["FileName"]] = item["FileId"]
+            print item["FileName"]
+
+        file_name = raw_input('Please enter the name of the file to rename: ')
+        if file_name in item_list_hash:
+            new_file_name = raw_input('Please enter the new file name: ')
+            self.client.users.rename_gallery_file(item_list_hash[file_name], new_file_name)
+            print file_name + ' successfully renamed to ' + new_file_name
+        else:
+            print 'Filename specified not in folder'
