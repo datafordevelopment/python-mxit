@@ -21,6 +21,10 @@ class TestUserAuthenticatedApiCalls(unittest.TestCase):
 
 
 def _get_user_auth_code(auth_url, username, password):
+    """
+    Helper function that automates the user auth form submission and code retrieval
+    """
+
     browser = mechanize.Browser()
 
     browser.open(auth_url)
