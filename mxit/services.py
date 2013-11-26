@@ -142,7 +142,7 @@ class UserService(BaseService):
         Delete the Mxit user's avatar
         User authentication required with the following scope: 'avatar/write'
         """
-        _delete(
+        return _delete(
             token=self.oauth.get_user_token(scope),
             uri='/user/avatar'
         )

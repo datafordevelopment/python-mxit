@@ -10,7 +10,7 @@ class TestPublicApiCalls(unittest.TestCase):
         self.client = Mxit(settings.CLIENT_ID, settings.CLIENT_SECRET)
 
 
-class TestUserAuthedApiCalls(unittest.TestCase):
+class TestUserAuthenticatedApiCalls(unittest.TestCase):
     def setUp(self):
         self.client = Mxit(settings.CLIENT_ID, settings.CLIENT_SECRET, redirect_uri='http://example.org/')
 
