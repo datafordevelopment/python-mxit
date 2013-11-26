@@ -127,12 +127,14 @@ Set the Mxit user's status
 
 ##### Example
 
-	from mxit import Mxit
+```python
+from mxit import Mxit
 	
-	client = Mxit(MXIT_CLIENT_ID, MXIT_CLIENT_SECRET, redirect_uri="http://example.org")
+client = Mxit(MXIT_CLIENT_ID, MXIT_CLIENT_SECRET, redirect_uri="http://example.org")
 	
-	client.oauth.get_user_token("status/write", RECEIVED_AUTH_CODE)
-	client.users.set_status("Some awesome status")
+client.oauth.get_user_token("status/write", RECEIVED_AUTH_CODE)
+client.users.set_status("Some awesome status")
+```
 
 #### get_display_name
 
