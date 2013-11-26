@@ -95,3 +95,7 @@ class TestSocialGraphApiCalls(TestUserAuthenticatedApiCalls):
 
         self.auth('contact/invite')
         self.client.users.add_contact(contact_id)
+
+
+class TestMediaApiCalls(TestUserAuthenticatedApiCalls):
+    pass
