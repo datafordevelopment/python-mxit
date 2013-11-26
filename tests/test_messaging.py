@@ -17,4 +17,14 @@ class TestMessagingApiCalls(TestUserAuthenticatedApiCalls):
         self.client.messaging.send_message(settings.APP_MXIT_ID, [user_id, ], message)
 
     def test_send_user_to_user_message(self):
-        pass
+        mxit_id = raw_input('Please enter Mxit ID of contact to send message to ("s" to skip this test): ')
+        if mxit_id == "s":
+            return
+
+        message = raw_input('Please enter a message to send to ' + mxit_id + ': ')
+
+        self.auth('message/user')
+
+        target_user_id = self.client.users.get_user_id(mxit_id)
+        from_user_id = self.client.users.get_user_id(settings.MXIT_USERNAME)
+        self.client.messaging.send_user_to_user_message(from_user_id, [target_user_id, ], message)
