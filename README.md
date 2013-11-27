@@ -6,7 +6,7 @@ Python wrapper for accessing [Mxit's public APIs](https://dev.mxit.com/docs/rest
 
 ### [Authentication](https://dev.mxit.com/docs/authentication)
 
-In order to use the Mxit APIs, one needs a *client ID* and *client secret*, which can be obtained by registering your app at [dev.mxit.com](https://dev.mxit.com). With these credentials a client object can be created:
+In order to use the Mxit APIs, one needs a *client ID* and *client secret*, which can be obtained by registering your app at [][dev.mxit.com](https://dev.mxit.com). With these credentials a client object can be created:
 
 ```python
 from mxit import Mxit
@@ -41,7 +41,7 @@ From here the client has access to the api calls allowed by the specified *scope
 
 ### [Messaging API](https://dev.mxit.com/docs/restapi/messaging)
 
-#### send_message
+#### [send_message](https://dev.mxit.com/docs/restapi/messaging/post-message-send)
 
 Send a message (from a Mxit app) to a list of Mxit users
 
@@ -64,7 +64,7 @@ client = Mxit(MXIT_CLIENT_ID, MXIT_CLIENT_SECRET)
 client.messaging.send_message("example_app_mxit_id", ["mxit_user_id_1", "mxit_user_id_2" ], "This is a test message")
 ```
 
-#### send_user_to_user_message
+#### [send_user_to_user_message](https://dev.mxit.com/docs/restapi/messaging/post-message-send)
 
 Send a message (from a Mxit user) to a list of Mxit users
 
@@ -90,7 +90,7 @@ client.messaging.send_user_to_user_message("example_mxit_user_id", ["mxit_user_i
 
 ### [User API](https://dev.mxit.com/docs/restapi/user])
 
-#### get_user_id
+#### [get_user_id](https://dev.mxit.com/docs/restapi/user/get-user-lookup-mxitid)
 
 Retrieve the Mxit user's internal "user ID"
 
@@ -110,7 +110,7 @@ client = Mxit(MXIT_CLIENT_ID, MXIT_CLIENT_SECRET)
 user_id = client.users.get_user_id("example_mxit_id")
 ```
 
-#### get_status
+#### [get_status](https://dev.mxit.com/docs/restapi/user/get-user-statusmessage)
 
 Retrieve the Mxit user's current status
 
@@ -130,7 +130,7 @@ client = Mxit(MXIT_CLIENT_ID, MXIT_CLIENT_SECRET)
 status = client.users.get_status("example_mxit_id")
 ```
 
-#### set_status
+#### [set_status](https://dev.mxit.com/docs/restapi/user/put-user-statusmessage)
 
 Set the Mxit user's status
 
@@ -151,7 +151,7 @@ client.oauth.get_user_token("status/write", RECEIVED_AUTH_CODE)
 client.users.set_status("Some awesome status")
 ```
 
-#### get_display_name
+#### [get_display_name](https://dev.mxit.com/docs/restapi/user/get-user-public-displayname-mxitid)
 
 Retrieve the Mxit user's display name
 
@@ -171,7 +171,7 @@ client = Mxit(MXIT_CLIENT_ID, MXIT_CLIENT_SECRET)
 display_name = client.users.get_display_name("example_mxit_id")
 ```
 
-#### get_avatar
+#### [get_avatar](https://dev.mxit.com/docs/restapi/user/get-user-avatar)
 
 Retrieve the Mxit user's avatar
 
@@ -197,7 +197,7 @@ data = client.users.get_avatar("example_mxit_id")
 ```
 
 
-#### set_avatar
+#### [set_avatar](https://dev.mxit.com/docs/restapi/user/post-user-avatar)
 
 Set the Mxit user's avatar
 
@@ -223,7 +223,7 @@ client.oauth.get_user_token("avatar/write", RECEIVED_AUTH_CODE)
 client.users.set_avatar(input_file_path="/path/to/avatar.png")
 ```
 
-#### delete_avatar
+#### [delete_avatar](https://dev.mxit.com/docs/restapi/user/delete-user-avatar)
 
 Delete the Mxit user's avatar
 
@@ -244,7 +244,7 @@ client.oauth.get_user_token("avatar/write", RECEIVED_AUTH_CODE)
 client.users.delete_avatar()
 ```
 
-#### get_basic_profile
+#### [get_basic_profile](https://dev.mxit.com/docs/restapi/user/get-user-profile-userid)
 
 Retrieve the Mxit user's basic profile
 
@@ -265,7 +265,7 @@ client = Mxit(MXIT_CLIENT_ID, MXIT_CLIENT_SECRET)
 basic_profile = client.users.get_basic_profile("example_user_id")
 ```
 
-#### get_full_profile
+#### [get_full_profile](https://dev.mxit.com/docs/restapi/user/get-user-profile)
 
 Retrieve the Mxit user's full profile
 
@@ -286,7 +286,7 @@ client.oauth.get_user_token("profile/private", RECEIVED_AUTH_CODE)
 full_profile = client.users.get_full_profile()
 ```
 
-#### update_profile
+#### [update_profile](https://dev.mxit.com/docs/restapi/user/put-user-profile)
 
 Update the Mxit user's profile
 
@@ -317,26 +317,26 @@ client.oauth.get_user_token("profile/write", RECEIVED_AUTH_CODE)
 client.users.update_profile(email="test@test.com", relationship_status=3)
 ```
 
-#### add_contact
+#### [add_contact](https://dev.mxit.com/docs/restapi/user/put-user-socialgraph-contact-contact)
 
-#### get_contact_list
+#### [get_contact_list](https://dev.mxit.com/docs/restapi/user/get-user-socialgraph-contactlist)
 
-#### get_friend_suggestions
+#### [get_friend_suggestions](https://dev.mxit.com/docs/restapi/user/get-user-socialgraph-suggestions)
 
-#### get_gallery_folder_list
+#### [get_gallery_folder_list](https://dev.mxit.com/docs/restapi/user/get-user-media)
 
-#### create_gallery_folder
+#### [create_gallery_folder](https://dev.mxit.com/docs/restapi/user/post-user-media-foldername)
 
-#### delete_gallery_folder
+#### [delete_gallery_folder](https://dev.mxit.com/docs/restapi/user/delete-user-media-foldername)
 
-#### rename_gallery_folder
+#### [rename_gallery_folder](https://dev.mxit.com/docs/restapi/user/put-user-media-foldername)
 
-#### delete_gallery_file
+#### [delete_gallery_file](https://dev.mxit.com/docs/restapi/user/delete-user-media-file-fileid)
 
-#### rename_gallery_file
+#### [rename_gallery_file](https://dev.mxit.com/docs/restapi/user/put-user-media-file-fileid)
 
-#### upload_gallery_file
+#### [upload_gallery_file](https://dev.mxit.com/docs/restapi/user/post-user-media-file-foldername)
 
-#### get_gallery_item_list
+#### [get_gallery_item_list](https://dev.mxit.com/docs/restapi/user/get-user-media-list-foldername)
 
-#### get_gallery_file
+#### [get_gallery_file](https://dev.mxit.com/docs/restapi/user/get-user-media-content-fileid)
