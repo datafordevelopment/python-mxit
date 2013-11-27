@@ -418,7 +418,8 @@ def _get(token, uri, content_type='application/json', api_endpoint=settings.API_
         response += chunk
 
     if r.status_code != 200:
-        raise MxitAPIException("Unexpected HTTP Status: %s" % r.status_code, {'response': response})
+        raise MxitAPIException("Unexpected HTTP Status: %s" % r.status_code,
+                               {'response': response, 'code': r.status_code})
 
     return response
 
@@ -440,7 +441,8 @@ def _post(token, uri, data={}, content_type='application/json', api_endpoint=set
         response += chunk
 
     if r.status_code != 200:
-        raise MxitAPIException("Unexpected HTTP Status: %s" % r.status_code, {'response': response})
+        raise MxitAPIException("Unexpected HTTP Status: %s" % r.status_code,
+                               {'response': response, 'code': r.status_code})
 
     return response
 
@@ -462,7 +464,8 @@ def _put(token, uri, data={}, content_type='application/json', api_endpoint=sett
         response += chunk
 
     if r.status_code != 200:
-        raise MxitAPIException("Unexpected HTTP Status: %s" % r.status_code, {'response': response})
+        raise MxitAPIException("Unexpected HTTP Status: %s" % r.status_code,
+                               {'response': response, 'code': r.status_code})
 
     return response
 
@@ -481,6 +484,7 @@ def _delete(token, uri, content_type='application/json', api_endpoint=settings.A
         response += chunk
 
     if r.status_code != 200:
-        raise MxitAPIException("Unexpected HTTP Status: %s" % r.status_code, {'response': response})
+        raise MxitAPIException("Unexpected HTTP Status: %s" % r.status_code,
+                               {'response': response, 'code': r.status_code})
 
     return response
