@@ -6,7 +6,7 @@ Python wrapper for accessing [Mxit's public APIs](https://dev.mxit.com/docs/rest
 
 ### [Authentication](https://dev.mxit.com/docs/authentication)
 
-In order to use the Mxit APIs, one needs a *client ID* and *client secret*, which can be obtained by registering your app at [][dev.mxit.com](https://dev.mxit.com). With these credentials a client object can be created:
+In order to use the Mxit APIs, one needs a *client ID* and *client secret*, which can be obtained by registering your app at [dev.mxit.com](https://dev.mxit.com). With these credentials a client object can be created:
 
 ```python
 from mxit import Mxit
