@@ -298,6 +298,7 @@ full_profile = client.users.get_full_profile()
 
 #### [update_profile](https://dev.mxit.com/docs/restapi/user/put-user-profile)
 
+
 Update the Mxit user's profile
 
 *User authentication required*: **YES**
@@ -331,24 +332,308 @@ client.users.update_profile(email="test@test.com", relationship_status=3)
 
 #### [add_contact](https://dev.mxit.com/docs/restapi/user/put-user-socialgraph-contact-contact)
 
+Add a contact on Mxit
+
+*User authentication required*: **YES**
+
+*Required scope*: **contact/invite**
+
+##### Parameters
+
+*contact_id* can either be the mxit ID of a service or a Mxit user
+
+* *contact_id* (**required**)
+* *scope* (**optional**)
+
+##### Example
+
+```python
+from mxit import Mxit
+	
+client = Mxit(MXIT_CLIENT_ID, MXIT_CLIENT_SECRET, redirect_uri="http://example.org")
+	
+client.oauth.get_user_token("contact/invite", RECEIVED_AUTH_CODE)
+client.users.add_contact("example_contact_id")
+```
+
+
 #### [get_contact_list](https://dev.mxit.com/docs/restapi/user/get-user-socialgraph-contactlist)
+
+ Retrieve the Mxit user's full contact list
+
+*User authentication required*: **YES**
+
+*Required scope*: **graph/read**
+
+##### Parameters
+
+*list_filter* options can be found in ``mxit.CONTACT_LIST_FILTER``. The following options are available: **"all", "friends", "apps", "invites", "connections", "rejected", "pending", "deleted", "blocked"**
+
+* *list_filter* (**required**)
+* *skip* (**optional**)
+* *count* (**optional**)
+* *scope* (**optional**)
+
+##### Example
+
+```python
+from mxit import Mxit, CONTACT_LIST_FILTER
+	
+client = Mxit(MXIT_CLIENT_ID, MXIT_CLIENT_SECRET, redirect_uri="http://example.org")
+	
+client.oauth.get_user_token("graph/read", RECEIVED_AUTH_CODE)
+client.users.get_contact_list(CONTACT_LIST_FILTER['all'])
+```
 
 #### [get_friend_suggestions](https://dev.mxit.com/docs/restapi/user/get-user-socialgraph-suggestions)
 
+Retrieve the Mxit user's full profile
+
+*User authentication required*: **YES**
+
+*Required scope*: **graph/read**
+
+##### Parameters
+
+* *scope* (**optional**)
+
+##### Example
+
+```python
+from mxit import Mxit
+	
+client = Mxit(MXIT_CLIENT_ID, MXIT_CLIENT_SECRET, redirect_uri="http://example.org")
+	
+client.oauth.get_user_token("graph/read", RECEIVED_AUTH_CODE)
+client.users.get_friend_suggestions()
+```
+
 #### [get_gallery_folder_list](https://dev.mxit.com/docs/restapi/user/get-user-media)
+
+Retrieve a list of the Mxit user's gallery folders
+
+*User authentication required*: **YES**
+
+*Required scope*: **content/read**
+
+##### Parameters
+
+* *scope* (**optional**)
+
+##### Example
+
+```python
+from mxit import Mxit
+	
+client = Mxit(MXIT_CLIENT_ID, MXIT_CLIENT_SECRET, redirect_uri="http://example.org")
+	
+client.oauth.get_user_token("content/read", RECEIVED_AUTH_CODE)
+client.users.get_gallery_folder_list()
+```
 
 #### [create_gallery_folder](https://dev.mxit.com/docs/restapi/user/post-user-media-foldername)
 
+Create a new folder in the Mxit user's gallery
+
+*User authentication required*: **YES**
+
+*Required scope*: **content/write**
+
+##### Parameters
+
+* *folder_name* (**required**)
+* *scope* (**optional**)
+
+##### Example
+
+```python
+from mxit import Mxit
+	
+client = Mxit(MXIT_CLIENT_ID, MXIT_CLIENT_SECRET, redirect_uri="http://example.org")
+	
+client.oauth.get_user_token("content/write", RECEIVED_AUTH_CODE)
+client.users.create_gallery_folder("example folder name")
+```
+
 #### [delete_gallery_folder](https://dev.mxit.com/docs/restapi/user/delete-user-media-foldername)
+
+Delete a folder in the Mxit user's gallery
+
+*User authentication required*: **YES**
+
+*Required scope*: **content/write**
+
+##### Parameters
+
+* *folder_name* (**required**)
+* *scope* (**optional**)
+
+##### Example
+
+```python
+from mxit import Mxit
+	
+client = Mxit(MXIT_CLIENT_ID, MXIT_CLIENT_SECRET, redirect_uri="http://example.org")
+	
+client.oauth.get_user_token("content/write", RECEIVED_AUTH_CODE)
+client.users.delete_gallery_folder("example folder name")
+```
 
 #### [rename_gallery_folder](https://dev.mxit.com/docs/restapi/user/put-user-media-foldername)
 
+Rename a folder in the Mxit user's gallery
+
+*User authentication required*: **YES**
+
+*Required scope*: **content/write**
+
+##### Parameters
+
+* *old_folder_name* (**required**)
+* *new_folder_name* (**required**)
+* *scope* (**optional**)
+
+##### Example
+
+```python
+from mxit import Mxit
+	
+client = Mxit(MXIT_CLIENT_ID, MXIT_CLIENT_SECRET, redirect_uri="http://example.org")
+	
+client.oauth.get_user_token("content/write", RECEIVED_AUTH_CODE)
+client.users.rename_gallery_folder("old example folder name", "new example folder name")
+```
+
 #### [delete_gallery_file](https://dev.mxit.com/docs/restapi/user/delete-user-media-file-fileid)
+
+Delete a file in the Mxit user's gallery
+
+*User authentication required*: **YES**
+
+*Required scope*: **content/write**
+
+##### Parameters
+
+* *file_id* (**required**)
+* *scope* (**optional**)
+
+##### Example
+
+```python
+from mxit import Mxit
+	
+client = Mxit(MXIT_CLIENT_ID, MXIT_CLIENT_SECRET, redirect_uri="http://example.org")
+	
+client.oauth.get_user_token("content/write", RECEIVED_AUTH_CODE)
+client.users.delete_gallery_file("example_file_id")
+```
 
 #### [rename_gallery_file](https://dev.mxit.com/docs/restapi/user/put-user-media-file-fileid)
 
+Rename a file in the Mxit user's gallery
+
+*User authentication required*: **YES**
+
+*Required scope*: **content/write**
+
+##### Parameters
+
+* *file_id* (**required**)
+* *new_file_name* (**required**)
+* *scope* (**optional**)
+
+##### Example
+
+```python
+from mxit import Mxit
+	
+client = Mxit(MXIT_CLIENT_ID, MXIT_CLIENT_SECRET, redirect_uri="http://example.org")
+	
+client.oauth.get_user_token("content/write", RECEIVED_AUTH_CODE)
+client.users.rename_gallery_file("example_file_id", "new file name")
+```
+
 #### [upload_gallery_file](https://dev.mxit.com/docs/restapi/user/post-user-media-file-foldername)
+
+Upload a file to a folder in the Mxit user's gallery
+
+*User authentication required*: **YES**
+
+*Required scope*: **content/write**
+
+##### Parameters
+
+The file can either be sent as a bytestream in *data* or as a filepath in *input_file_path*.
+
+* *folder_name* (**required**)
+* *file_name* (**required**)
+* *data* (**optional**)
+* *input_file_path* (**optional**)
+* *content_type* (**optional**)
+* *scope* (**optional**)
+
+##### Example
+
+```python
+from mxit import Mxit
+	
+client = Mxit(MXIT_CLIENT_ID, MXIT_CLIENT_SECRET, redirect_uri="http://example.org")
+	
+client.oauth.get_user_token("content/write", RECEIVED_AUTH_CODE)
+client.users.upload_gallery_file("example folder name", "example file name", input_file_path="/path/to/image.png", content_type="image/png")
+```
 
 #### [get_gallery_item_list](https://dev.mxit.com/docs/restapi/user/get-user-media-list-foldername)
 
+Get the item listing in a given folder in the Mxit user's gallery
+
+*User authentication required*: **YES**
+
+*Required scope*: **content/read**
+
+##### Parameters
+
+* *folder_name* (**required**)
+* *skip* (**optional**)
+* *count* (**optional**)
+* *scope* (**optional**)
+
+##### Example
+
+```python
+from mxit import Mxit
+	
+client = Mxit(MXIT_CLIENT_ID, MXIT_CLIENT_SECRET, redirect_uri="http://example.org")
+	
+client.oauth.get_user_token("content/read", RECEIVED_AUTH_CODE)
+client.users.get_gallery_item_list("example folder name")
+```
+
 #### [get_gallery_file](https://dev.mxit.com/docs/restapi/user/get-user-media-content-fileid)
+
+Get a file in the Mxit user's gallery
+
+*User authentication required*: **YES**
+
+*Required scope*: **content/read**
+
+##### Parameters
+
+If *output_file_path* is set, the file will be saved at that path, otherwise the file data will be returned.
+
+* *file_id* (**required**)
+* *output_file_path* (**optional**)
+* *scope* (**optional**)
+
+##### Example
+
+```python
+from mxit import Mxit
+	
+client = Mxit(MXIT_CLIENT_ID, MXIT_CLIENT_SECRET, redirect_uri="http://example.org")
+	
+client.oauth.get_user_token("content/read", RECEIVED_AUTH_CODE)
+
+client.users.get_gallery_file("example_file_id", output_file_path="/path/to/image.png")
+data = client.users.get_avatar("example_file_id")
+```

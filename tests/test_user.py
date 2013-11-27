@@ -73,7 +73,7 @@ class TestUserAuthenticatedProfileApiCalls(TestUserAuthenticatedApiCalls):
 class TestSocialGraphApiCalls(TestUserAuthenticatedApiCalls):
     def test_get_contact_list(self):
         self.auth('graph/read')
-        contact_list = self.client.users.get_contact_list(mxit.services.CONTACT_LIST_FILTER['all'])
+        contact_list = self.client.users.get_contact_list(mxit.CONTACT_LIST_FILTER['all'])
         self.assertIsNotNone(contact_list['Contacts'])
 
     def test_get_friend_suggestions(self):
