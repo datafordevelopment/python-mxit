@@ -70,6 +70,8 @@ Send a message (from a Mxit user) to a list of Mxit users
 
 *User authentication required*: **YES**
 
+*Required scope*: **message/user**
+
 ##### Parameters
 * *from_user_id* (**required**)
 * *target_user_ids* (**required**)
@@ -135,6 +137,8 @@ status = client.users.get_status("example_mxit_id")
 Set the Mxit user's status
 
 *User authentication required*: **YES**
+
+*Required scope*: **status/write**
 
 ##### Parameters
 * *message* (**required**)
@@ -203,6 +207,8 @@ Set the Mxit user's avatar
 
 *User authentication required*: **YES**
 
+*Required scope*: **avatar/write**
+
 ##### Parameters
 
 The avatar can either be sent as a bytestream in *data* or as a filepath in *input_file_path*.
@@ -228,6 +234,8 @@ client.users.set_avatar(input_file_path="/path/to/avatar.png")
 Delete the Mxit user's avatar
 
 *User authentication required*: **YES**
+
+*Required scope*: **avatar/write**
 
 ##### Parameters
 
@@ -271,6 +279,8 @@ Retrieve the Mxit user's full profile
 
 *User authentication required*: **YES**
 
+*Required scope*: **profile/private**
+
 ##### Parameters
 
 * *scope* (**optional**)
@@ -291,6 +301,8 @@ full_profile = client.users.get_full_profile()
 Update the Mxit user's profile
 
 *User authentication required*: **YES**
+
+*Required scope*: **profile/write**
 
 ##### Parameters
 
