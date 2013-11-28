@@ -88,7 +88,7 @@ class OAuth():
             return self.__app_token
 
         if self.__cache is not None:
-            token = self.__cache.get(self.__app_token_cache_key())
+            token = self.__cache.get(self.__app_token_cache_key(scope))
             if token:
                 return token
 
