@@ -11,7 +11,7 @@ setup(
     description="Python utility library for accessing Mxit's public APIs.",
     long_description=open('README.md').read(),
     install_requires=[
-        "requests >= 1.2.3",
+        "requests == 2.0.1",
     ],
 )
 
