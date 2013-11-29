@@ -2,6 +2,10 @@
 
 Python wrapper for accessing [Mxit's public APIs](https://dev.mxit.com/docs/restapi)
 
+## Installation
+
+	pip install mxit
+
 ## Usage
 
 ### [Authentication](https://dev.mxit.com/docs/authentication)
