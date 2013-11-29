@@ -2,9 +2,9 @@ from distutils.core import setup
 
 setup(
     name='mxit',
-    version='0.0.3',
-    author='Donovan Schönknecht',
-    author_email='don@tpyo.net',
+    version='0.3',
+    author='Philip Perold',
+    author_email='prperold@gmail.com',
     packages=['mxit'],
     url='https://github.com/Mxit/python-mxit',
     license='LICENSE',
