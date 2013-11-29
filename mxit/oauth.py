@@ -17,12 +17,37 @@ class OAuth():
         self.__state = state
 
         self.__user_token = None
-        self.__user_token_expires = None
-
         self.__app_token = None
-        self.__app_token_expires = None
 
         self.__cache = cache
+
+    def __set_user_token(self, scope_string, token):
+
+        if not self.__user_token:
+            self.__user_token = {}
+
+        self.__user_token[scope_string] = token
+        for scope in scope_string.split():
+            self.__user_token[scope] = token
+
+    def __get_user_token(self, scope):
+        if self.__user_token and scope in self.__user_token:
+            return self.__user_token[scope]
+        return None
+
+    def __set_app_token(self, scope_string, token):
+
+        if not self.__app_token:
+            self.__app_token = {}
+
+        self.__app_token[scope_string] = token
+        for scope in scope_string.split():
+            self.__app_token[scope] = token
+
+    def __get_app_token(self, scope):
+        if self.__app_token and scope in self.__app_token:
+            return self.__app_token[scope]
+        return None
 
     def __user_token_cache_key(self, scope):
         return "oauth_user_%s_%s" % (scope.replace("/", "_"), self.__client_id)
@@ -47,8 +72,10 @@ class OAuth():
     def get_user_token(self, scope, code=None):
         """Gets the auth token from a user's response"""
 
-        if self.__user_token:
-            return self.__user_token
+        user_token = self.__get_user_token(scope)
+
+        if user_token:
+            return user_token
 
         if self.__cache is not None:
             token = self.__cache.get(self.__user_token_cache_key())
@@ -59,7 +86,6 @@ class OAuth():
             raise MxitAPIParameterException()
 
         self.__user_token = None
-        self.__user_token_expires = None
 
         payload = {
             'grant_type': 'authorization_code',
@@ -71,21 +97,25 @@ class OAuth():
         r = post(url, data=payload, auth=HTTPBasicAuth(self.__client_id, self.__client_secret))
         if r.status_code == 200:
             data = r.json()
-            self.__user_token = data[u'access_token']
-            self.__user_token_expires = data[u'expires_in']
+            self.__set_user_token(scope, data[u'access_token'])
             if self.__cache is not None:
-                self.__cache.set(self.__user_token_cache_key(scope), str(self.__user_token), self.__user_token_expires - 300)
+                self.__cache.set(self.__user_token_cache_key(scope), str(data[u'access_token']),
+                                 data[u'expires_in'] - 300)
 
-        if not self.__user_token:
+        user_token = self.__get_user_token(scope)
+
+        if not user_token:
             raise MxitAPIException("Failed to retrieve user token for '%s' scope" % scope)
 
-        return self.__user_token
+        return user_token
 
     def get_app_token(self, scope):
         """Gets the app auth token"""
 
-        if self.__app_token:
-            return self.__app_token
+        app_token = self.__get_app_token(scope)
+
+        if app_token:
+            return app_token
 
         if self.__cache is not None:
             token = self.__cache.get(self.__app_token_cache_key(scope))
@@ -93,7 +123,6 @@ class OAuth():
                 return token
 
         self.__app_token = None
-        self.__app_token_expires = None
 
         payload = {
             'grant_type': 'client_credentials',
@@ -104,12 +133,14 @@ class OAuth():
         r = post(url, data=payload, auth=HTTPBasicAuth(self.__client_id, self.__client_secret))
         if r.status_code == 200:
             data = r.json()
-            self.__app_token = data[u'access_token']
-            self.__app_token_expires = data[u'expires_in']
+            self.__set_app_token(scope, data[u'access_token'])
             if self.__cache is not None:
-                self.__cache.set(self.__app_token_cache_key(scope), str(self.__app_token), self.__app_token_expires - 300)
+                self.__cache.set(self.__app_token_cache_key(scope), str(data[u'access_token']),
+                                 data[u'expires_in'] - 300)
 
-        if not self.__app_token:
+        app_token = self.__get_app_token(scope)
+
+        if not app_token:
             raise MxitAPIException("Failed to retrieve app token for '%s' scope" % scope)
 
-        return self.__app_token
+        return app_token

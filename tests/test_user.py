@@ -258,7 +258,7 @@ class TestMediaApiCalls(TestUserAuthenticatedApiCalls):
             item_list_hash[item["FileName"]] = item["FileId"]
             print item["FileName"]
 
-        self.client.oauth.get_app_token('profile/public content/send')
+        #self.client.oauth.get_app_token('profile/public content/send')
 
         file_name = raw_input('Please enter the name of the file to send: ')
         if file_name in item_list_hash:
