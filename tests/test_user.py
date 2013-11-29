@@ -258,9 +258,11 @@ class TestMediaApiCalls(TestUserAuthenticatedApiCalls):
             item_list_hash[item["FileName"]] = item["FileId"]
             print item["FileName"]
 
+        self.client.oauth.get_app_token('profile/public content/send')
+
         file_name = raw_input('Please enter the name of the file to send: ')
         if file_name in item_list_hash:
-            user_id = raw_input('Please enter the user_id of the Mxit user to send the file to: ')
+            user_id = self.client.users.get_user_id(settings.MXIT_USERNAME)
             self.client.users.send_file_offer(item_list_hash[file_name], user_id)
             print file_name + ' offer successfully sent'
         else:

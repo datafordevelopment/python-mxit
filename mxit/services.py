@@ -423,10 +423,8 @@ class UserService(BaseService):
             'UserId': user_id
         }
 
-        print '/user/media/file/send/' + urllib.quote(file_id) + '?' + urllib.urlencode(params)
-
         return _post(
-            token=self.oauth.get_user_token(scope),
+            token=self.oauth.get_app_token(scope),
             uri='/user/media/file/send/' + urllib.quote(file_id) + '?' + urllib.urlencode(params)
         )
 
