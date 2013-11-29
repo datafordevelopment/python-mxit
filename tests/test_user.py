@@ -8,6 +8,7 @@ class TestPublicProfileApiCalls(TestPublicApiCalls):
     def test_get_user_id(self):
         user_id = self.client.users.get_user_id(settings.MXIT_USERNAME)
         self.assertIsInstance(user_id, basestring)
+        print user_id
 
     def test_get_avatar(self):
         avatar_data = self.client.users.get_avatar(settings.MXIT_USERNAME)
@@ -237,3 +238,42 @@ class TestMediaApiCalls(TestUserAuthenticatedApiCalls):
             print file_name + ' successfully renamed to ' + new_file_name
         else:
             print 'Filename specified not in folder'
+
+    def test_send_file_offer(self):
+        folder_name = raw_input(
+            'Please enter the name of the folder where the file is in ("s" to skip this test): ')
+
+        if folder_name == "s":
+            return
+
+        self.auth('content/read content/write content/send')
+        item_list = self.client.users.get_gallery_item_list(folder_name)
+        item_list_hash = {}
+        if not item_list:
+            print "No items in this folder"
+            return
+        print "Item List"
+        print "=============================="
+        for item in item_list:
+            item_list_hash[item["FileName"]] = item["FileId"]
+            print item["FileName"]
+
+        file_name = raw_input('Please enter the name of the file to send: ')
+        if file_name in item_list_hash:
+            user_id = raw_input('Please enter the user_id of the Mxit user to send the file to: ')
+            self.client.users.send_file_offer(item_list_hash[file_name], user_id)
+            print file_name + ' offer successfully sent'
+        else:
+            print 'Filename specified not in folder'
+
+    def test_upload_file_and_send_file_offer(self):
+        file_name = raw_input('Please enter a name to give the uploaded file ("s" to skip this test): ')
+
+        if file_name == "s":
+            return
+
+        user_id = raw_input('Please enter user_id of user to send file offer to: ')
+
+        self.auth('content/read content/write content/send')
+        self.client.users.upload_file_and_send_file_offer(file_name, user_id,
+                                              input_file_path=settings.ABSOLUTE_PATH_TO_PNG_IMAGE)

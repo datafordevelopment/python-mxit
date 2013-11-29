@@ -388,6 +388,48 @@ class UserService(BaseService):
         else:
             return data
 
+    def upload_file_and_send_file_offer(self, file_name, user_id, data=None, input_file_path=None,
+                                        content_type='application/octet-stream', scope='content/send'):
+        """
+        Upload a file of any type to store and return a FileId once file offer has been sent.
+        User authentication required with the following scope: 'content/write'
+        """
+        if input_file_path:
+            with open(input_file_path, 'rb') as f:
+                data = f.read()
+
+        if not data:
+            raise ValueError('Either the data of a file or the path to a file must be provided')
+
+        params = {
+            'fileName': file_name,
+            'userId': user_id
+        }
+
+        return _post(
+            token=self.oauth.get_user_token(scope),
+            uri='/user/media/file/send?' + urllib.urlencode(params),
+            data=data,
+            content_type=content_type
+        )
+
+    def send_file_offer(self, file_id, user_id, scope='content/send'):
+        """
+        Send an offer to a user for content to be downloaded.
+        User authentication required with the following scope: 'content/write'
+        """
+
+        params = {
+            'UserId': user_id
+        }
+
+        print '/user/media/file/send/' + urllib.quote(file_id) + '?' + urllib.urlencode(params)
+
+        return _post(
+            token=self.oauth.get_user_token(scope),
+            uri='/user/media/file/send/' + urllib.quote(file_id) + '?' + urllib.urlencode(params)
+        )
+
 
 # Helpers
 
