@@ -13,13 +13,27 @@ from mxit import Mxit
     
 client = Mxit(MXIT_CLIENT_ID, MXIT_CLIENT_SECRET)
 ```
-    
+Certain *Mxit API* calls are publically available, and thus only require app authentication. It is not necessary to specify *scope* when making these calls through this *API wrapper*, since it is already done in the respective functions. If, however, multiple calls requiring different scopes are going to be performed in a single process, it will be neccessary to manually request the given auth token:
+
+```python
+from mxit import Mxit
+
+EXAMPLE_SCOPES = "public/profile message/send"
+	
+client = Mxit(MXIT_CLIENT_ID, MXIT_CLIENT_SECRET)
+client.oauth.get_app_token(EXAMPLE_SCOPES)
+
+user_id = client.users.get_user_id("example_mxit_id")
+client.messaging.send_message("example_app_mxit_id", [user_id, ], "This is an example message")
+```
+
 Certain *Mxit API* calls require user authentication. The user would thus need to be redirected to *Mxit's* auth site, where permission will be granted by the user for the requested *scope(s)*. The auth site will then redirect the user back to a specified url with a *code* attached in the query string. This code is then used to obtain the auth token for the following *API* calls. For this flow the url where the auth site needs to redirect back to needs to be specified when instantiating the client:
 
 ```python
 from mxit import Mxit
-	
+
 client = Mxit(MXIT_CLIENT_ID, MXIT_CLIENT_SECRET, redirect_url='http://example.org')
+client.oauth.get_user_token(SCOPE, RECEIVED_CODE)
 ```
 	
 The auth site url to redirect the user to can be obtained with the following call (where *SCOPE* is the required scope(s) for the API calls to be made):
@@ -46,6 +60,8 @@ From here the client has access to the api calls allowed by the specified *scope
 Send a message (from a Mxit app) to a list of Mxit users
 
 *User authentication required*: **NO**
+
+*Required scope*: **message/send**
 
 ##### Parameters
 * *app_mxit_id* (**required**)
@@ -98,6 +114,8 @@ Retrieve the Mxit user's internal "user ID"
 
 *User authentication required*: **NO**
 
+*Required scope*: **profile/public**
+
 ##### Parameters
 * *mxit_id* (**required**)
 * *scope* (**optional**)
@@ -117,6 +135,8 @@ user_id = client.users.get_user_id("example_mxit_id")
 Retrieve the Mxit user's current status
 
 *User authentication required*: **NO**
+
+*Required scope*: **profile/public**
 
 ##### Parameters
 * *mxit_id* (**required**)
@@ -161,6 +181,8 @@ Retrieve the Mxit user's display name
 
 *User authentication required*: **NO**
 
+*Required scope*: **profile/public**
+
 ##### Parameters
 * *mxit_id* (**required**)
 * *scope* (**optional**)
@@ -180,6 +202,8 @@ display_name = client.users.get_display_name("example_mxit_id")
 Retrieve the Mxit user's avatar
 
 *User authentication required*: **NO**
+
+*Required scope*: **profile/public**
 
 ##### Parameters
 
@@ -257,6 +281,8 @@ client.users.delete_avatar()
 Retrieve the Mxit user's basic profile
 
 *User authentication required*: **NO**
+
+*Required scope*: **profile/public**
 
 ##### Parameters
 
@@ -636,4 +662,64 @@ client.oauth.get_user_token("content/read", RECEIVED_AUTH_CODE)
 
 client.users.get_gallery_file("example_file_id", output_file_path="/path/to/image.png")
 data = client.users.get_avatar("example_file_id")
+```
+
+#### upload_file_and_send_file_offer
+
+Upload a file of any type to store and return a FileId once file offer has been sent.
+
+*User authentication required*: **NO**
+
+*Required scope*: **content/send**
+
+##### Parameters
+
+The file can either be sent as a bytestream in *data* or as a filepath in *input_file_path*.
+
+* *file_name* (**required**)
+* *user_id* (**required**)
+* *data* (**optional**)
+* *input_file_path* (**optional**)
+* *scope* (**optional**)
+
+##### Example
+
+```python
+from mxit import Mxit
+	
+client = Mxit(MXIT_CLIENT_ID, MXIT_CLIENT_SECRET)
+
+\# Require profile/public and content/send scopes in order to get user_id adn send file offer
+client.oauth.get_app_token("profile/public content/send")
+
+user_id = client.users.get_user_id("example_mxit_id")
+client.users.upload_file_and_send_file_offer("example_file_name", user_id, input_file_path="/path/to/image.png")
+```
+
+#### send_file_offer
+
+Upload a file of any type to store and return a FileId once file offer has been sent.
+
+*User authentication required*: **NO**
+
+*Required scope*: **content/send**
+
+##### Parameters
+
+* *file_id* (**required**)
+* *user_id* (**required**)
+* *scope* (**optional**)
+
+##### Example
+
+```python
+from mxit import Mxit
+	
+client = Mxit(MXIT_CLIENT_ID, MXIT_CLIENT_SECRET)
+
+\# Require profile/public and content/send scopes in order to get user_id adn send file offer
+client.oauth.get_app_token("profile/public content/send")
+
+user_id = client.users.get_user_id("example_mxit_id")
+client.users.send_file_offer("example_file_id", user_id)
 ```
