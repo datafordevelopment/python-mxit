@@ -39,3 +39,4 @@ nosetests.xml
 
 # Testing
 tests/settings.py
+tests/data
