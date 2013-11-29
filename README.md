@@ -13,19 +13,8 @@ from mxit import Mxit
     
 client = Mxit(MXIT_CLIENT_ID, MXIT_CLIENT_SECRET)
 ```
-Certain *Mxit API* calls are publically available, and thus only require app authentication. It is not necessary to specify *scope* when making these calls through this *API wrapper*, since it is already done in the respective functions. If, however, multiple calls requiring different scopes are going to be performed in a single process, it will be neccessary to manually request the given auth token:
 
-```python
-from mxit import Mxit
-
-EXAMPLE_SCOPES = "public/profile message/send"
-	
-client = Mxit(MXIT_CLIENT_ID, MXIT_CLIENT_SECRET)
-client.oauth.get_app_token(EXAMPLE_SCOPES)
-
-user_id = client.users.get_user_id("example_mxit_id")
-client.messaging.send_message("example_app_mxit_id", [user_id, ], "This is an example message")
-```
+Certain *Mxit API* calls are publically available, and thus only require app authentication. It is not necessary to specify *scope* when making these calls through this *API wrapper*, since it is already done in the respective functions.
 
 Certain *Mxit API* calls require user authentication. The user would thus need to be redirected to *Mxit's* auth site, where permission will be granted by the user for the requested *scope(s)*. The auth site will then redirect the user back to a specified url with a *code* attached in the query string. This code is then used to obtain the auth token for the following *API* calls. For this flow the url where the auth site needs to redirect back to needs to be specified when instantiating the client:
 
