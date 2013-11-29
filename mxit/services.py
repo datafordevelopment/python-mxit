@@ -392,7 +392,7 @@ class UserService(BaseService):
                                         content_type='application/octet-stream', scope='content/send'):
         """
         Upload a file of any type to store and return a FileId once file offer has been sent.
-        User authentication required with the following scope: 'content/write'
+        No user authentication required
         """
         if input_file_path:
             with open(input_file_path, 'rb') as f:
@@ -407,7 +407,7 @@ class UserService(BaseService):
         }
 
         return _post(
-            token=self.oauth.get_user_token(scope),
+            token=self.oauth.get_app_token(scope),
             uri='/user/media/file/send?' + urllib.urlencode(params),
             data=data,
             content_type=content_type

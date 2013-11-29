@@ -274,6 +274,5 @@ class TestMediaApiCalls(TestUserAuthenticatedApiCalls):
 
         user_id = raw_input('Please enter user_id of user to send file offer to: ')
 
-        self.auth('content/read content/write content/send')
-        self.client.users.upload_file_and_send_file_offer(file_name, user_id,
-                                              input_file_path=settings.ABSOLUTE_PATH_TO_PNG_IMAGE)
+        print(self.client.users.upload_file_and_send_file_offer(file_name, user_id,
+                                              input_file_path=settings.ABSOLUTE_PATH_TO_PNG_IMAGE))
