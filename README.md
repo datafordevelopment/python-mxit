@@ -689,9 +689,6 @@ from mxit import Mxit
 	
 client = Mxit(MXIT_CLIENT_ID, MXIT_CLIENT_SECRET)
 
-\# Require profile/public and content/send scopes in order to get user_id adn send file offer
-client.oauth.get_app_token("profile/public content/send")
-
 user_id = client.users.get_user_id("example_mxit_id")
 client.users.upload_file_and_send_file_offer("example_file_name", user_id, input_file_path="/path/to/image.png")
 ```
@@ -716,9 +713,6 @@ Upload a file of any type to store and return a FileId once file offer has been 
 from mxit import Mxit
 	
 client = Mxit(MXIT_CLIENT_ID, MXIT_CLIENT_SECRET)
-
-\# Require profile/public and content/send scopes in order to get user_id adn send file offer
-client.oauth.get_app_token("profile/public content/send")
 
 user_id = client.users.get_user_id("example_mxit_id")
 client.users.send_file_offer("example_file_id", user_id)
