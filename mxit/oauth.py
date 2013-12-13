@@ -50,10 +50,10 @@ class OAuth():
         return None
 
     def __user_token_cache_key(self, scope):
-        return "oauth_user_%s_%s" % (scope.replace("/", "_"), self.__client_id)
+        return str("oauth_user_%s_%s" % (scope.replace("/", "_"), self.__client_id))
 
     def __app_token_cache_key(self, scope):
-        return "oauth_app_%s_%s" % (scope.replace("/", "_"), self.__client_id)
+        return str("oauth_app_%s_%s" % (scope.replace("/", "_"), self.__client_id))
 
     def auth_url(self, scope):
         """Gets the url a user needs to access to give up a user token"""

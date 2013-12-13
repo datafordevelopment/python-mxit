@@ -9,7 +9,7 @@ except:
 
 setup(
     name='mxit',
-    version='0.3',
+    version='0.3.1',
     author='Philip Perold',
     author_email='prperold@gmail.com',
     packages=['mxit'],
