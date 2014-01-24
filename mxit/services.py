@@ -11,20 +11,30 @@ class BaseService():
 
 
 class MessagingService(BaseService):
-    def send_message(self, app_mxit_id, target_user_ids, message='', contains_markup=True, scope='message/send'):
+    def send_message(self, app_mxit_id, target_user_ids, message='', contains_markup=True,
+                     spool=None, spool_timeout=None, links=None, scope='message/send'):
         """
         Send a message (from a Mxit app) to a list of Mxit users
         """
 
+        data = {
+            'From': app_mxit_id,
+            'To': ",".join(target_user_ids),
+            'Body': message,
+            'ContainsMarkup': contains_markup
+        }
+
+        if spool:
+            data['Spool'] = spool
+        if spool_timeout:
+            data['SpoolTimeOut'] = spool_timeout
+        if links:
+            data['Links'] = links
+
         return _post(
             token=self.oauth.get_app_token(scope),
             uri='/message/send',
-            data={
-                'From': app_mxit_id,
-                'To': ",".join(target_user_ids),
-                'Body': message,
-                'ContainsMarkup': contains_markup
-            }
+            data=data
         )
 
     def send_user_to_user_message(self, from_user_id, target_user_ids, message='', contains_markup=True,
@@ -42,6 +52,21 @@ class MessagingService(BaseService):
                 'ContainsMarkup': contains_markup
             }
         )
+
+    def create_redirect_link(self, create_temporary_contact, target_service, text,
+                             add_to_back_history=None, parameters=None):
+        data = {
+            'CreateTemporaryContact': create_temporary_contact,
+            'TargetService': target_service,
+            'Text': text
+        }
+        if text:
+            data['Text'] = text
+        if add_to_back_history:
+            data['AddToBackHistory'] = add_to_back_history;
+        if parameters:
+            data['Parameters'] = parameters;
+        return data
 
 
 class UserService(BaseService):
