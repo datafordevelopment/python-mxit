@@ -60,8 +60,6 @@ class MessagingService(BaseService):
             'TargetService': target_service,
             'Text': text
         }
-        if text:
-            data['Text'] = text
         if add_to_back_history:
             data['AddToBackHistory'] = add_to_back_history;
         if parameters:
