@@ -10,7 +10,7 @@ class OAuth():
     Assists with retrieval of OAuth tokens
     """
 
-    def __init__(self, client_id, client_secret, redirect_uri=None, state=None, cache=None):
+    def __init__(self, client_id, client_secret, redirect_uri=None, state=None, cache=None, verify_cert=True):
         self.__client_id = client_id
         self.__client_secret = client_secret
         self.__redirect_uri = redirect_uri
@@ -20,6 +20,7 @@ class OAuth():
         self.__app_token = None
 
         self.__cache = cache
+        self.__verify_cert = verify_cert
 
     def __set_user_token(self, scope_string, token):
 
@@ -94,7 +95,7 @@ class OAuth():
         }
 
         url = settings.AUTH_ENDPOINT + '/token'
-        r = post(url, data=payload, auth=HTTPBasicAuth(self.__client_id, self.__client_secret))
+        r = post(url, data=payload, auth=HTTPBasicAuth(self.__client_id, self.__client_secret), verify=self.__verify_cert)
         if r.status_code == 200:
             data = r.json()
             self.__set_user_token(scope, data[u'access_token'])
@@ -130,7 +131,7 @@ class OAuth():
         }
 
         url = settings.AUTH_ENDPOINT + '/token'
-        r = post(url, data=payload, auth=HTTPBasicAuth(self.__client_id, self.__client_secret))
+        r = post(url, data=payload, auth=HTTPBasicAuth(self.__client_id, self.__client_secret), verify=self.__verify_cert)
         if r.status_code == 200:
             data = r.json()
             self.__set_app_token(scope, data[u'access_token'])
