@@ -7,10 +7,10 @@ class Mxit():
     Mxit API wrapper
     """
 
-    def __init__(self, client_id, client_secret, redirect_uri=None, state=None, cache=None):
+    def __init__(self, client_id, client_secret, redirect_uri=None, state=None, cache=None, verify_cert=True):
 
         # Auth
-        self.oauth = OAuth(client_id, client_secret, redirect_uri, state, cache)
+        self.oauth = OAuth(client_id, client_secret, redirect_uri, state, cache, verify_cert)
 
         # Services
         self.messaging = MessagingService(self.oauth)
