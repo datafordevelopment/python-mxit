@@ -2,7 +2,7 @@ from mxit.oauth import OAuth
 from mxit.services import MessagingService, UserService
 
 
-class Mxit():
+class Mxit(object):
     """
     Mxit API wrapper
     """
