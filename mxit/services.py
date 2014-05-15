@@ -451,6 +451,42 @@ class UserService(BaseService):
             uri='/user/media/file/send/' + urllib.quote(file_id) + '?' + urllib.urlencode(params)
         )
 
+    def get_cover_image(self, output_file_path=None, scope='profile/public'):
+        """
+        Retrieve the Mxit user's cover image
+        No user authentication required
+        """
+        data = _get(
+            token=self.oauth.get_app_token(scope),
+            uri='/user/cover'
+        )
+
+        if output_file_path:
+            with open(output_file_path, 'w') as f:
+                f.write(data)
+        else:
+            return data
+
+    def upload_user_cover_image(self, data=None, input_file_path=None, scope='avatar/write',
+                   content_type='application/octet-stream'):
+        """
+        Set the Mxit user's cover image
+        User authentication required with the following scope: 'avatar/write' (cover image and avatars are treated the same)
+        """
+        if input_file_path:
+            with open(input_file_path, 'rb') as f:
+                data = f.read()
+
+        if not data:
+            raise ValueError('Either the data of an image file or the path to an image file must be provided')
+
+        return _post(
+            token=self.oauth.get_user_token(scope),
+            uri='/user/cover',
+            data=data,
+            content_type=content_type,
+            )
+
 
 # Helpers
 
