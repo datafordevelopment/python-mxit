@@ -467,8 +467,8 @@ class UserService(BaseService):
         else:
             return data
 
-    def upload_user_cover_image(self, data=None, input_file_path=None, scope='avatar/write',
-                   content_type='application/octet-stream'):
+    def set_cover_image(self, data=None, input_file_path=None, scope='avatar/write',
+                        content_type='application/octet-stream'):
         """
         Set the Mxit user's cover image
         User authentication required with the following scope: 'avatar/write' (cover image and avatars are treated the same)
