@@ -457,7 +457,7 @@ class UserService(BaseService):
         No user authentication required
         """
         data = _get(
-            token=self.oauth.get_app_token(scope),
+            token=self.oauth.get_user_token(scope),
             uri='/user/cover'
         )
 
