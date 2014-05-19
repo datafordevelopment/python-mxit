@@ -64,11 +64,19 @@ class TestUserAuthenticatedProfileApiCalls(TestUserAuthenticatedApiCalls):
 
     def test_set_avatar(self):
         self.auth('avatar/write')
-        self.client.users.set_avatar(input_file_path=settings.ABSOLUTE_PATH_TO_PNG_IMAGE)
+        self.client.users.set_avatar(input_file_path=settings.ABSOLUTE_PATH_TO_AVATAR_IMAGE)
 
     def test_delete_avatar(self):
         self.auth('avatar/write')
         self.client.users.delete_avatar()
+
+    def test_set_cover_image(self):
+        self.auth('avatar/write')
+        self.client.users.set_cover_image(input_file_path=settings.ABSOLUTE_PATH_TO_COVER_IMAGE, content_type='image/png')
+
+    def test_get_cover_image(self):
+        self.auth('profile/public')
+        self.client.users.get_cover_image()
 
 
 class TestSocialGraphApiCalls(TestUserAuthenticatedApiCalls):
@@ -157,7 +165,7 @@ class TestMediaApiCalls(TestUserAuthenticatedApiCalls):
 
         self.auth('content/write')
         self.client.users.upload_gallery_file(folder_name, file_name,
-                                              input_file_path=settings.ABSOLUTE_PATH_TO_PNG_IMAGE)
+                                              input_file_path=settings.ABSOLUTE_PATH_TO_AVATAR_IMAGE)
 
     def test_delete_gallery_file(self):
         folder_name = raw_input(
@@ -277,4 +285,4 @@ class TestMediaApiCalls(TestUserAuthenticatedApiCalls):
         user_id = raw_input('Please enter user_id of user to send file offer to: ')
 
         print(self.client.users.upload_file_and_send_file_offer(file_name, user_id,
-                                              input_file_path=settings.ABSOLUTE_PATH_TO_PNG_IMAGE))
+                                              input_file_path=settings.ABSOLUTE_PATH_TO_AVATAR_IMAGE))
