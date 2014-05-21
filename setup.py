@@ -10,8 +10,8 @@ except:
 setup(
     name='mxit',
     version='0.3.5',
-    author='Philip Perold',
-    author_email='prperold@gmail.com',
+    author='Mxit Developers',
+    author_email='developerrelations@mxit.com',
     packages=['mxit'],
     url='https://github.com/Mxit/python-mxit',
     license='LICENSE',
