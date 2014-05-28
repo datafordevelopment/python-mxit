@@ -412,7 +412,7 @@ class UserService(BaseService):
             return data
 
     def upload_file_and_send_file_offer(self, file_name, user_id, data=None, input_file_path=None,
-                                        content_type='application/octet-stream', scope='content/send'):
+                                        content_type='application/octet-stream', auto_open=False, scope='content/send'):
         """
         Upload a file of any type to store and return a FileId once file offer has been sent.
         No user authentication required
@@ -426,7 +426,8 @@ class UserService(BaseService):
 
         params = {
             'fileName': file_name,
-            'userId': user_id
+            'userId': user_id,
+            'autoOpen': 'true' if auto_open else 'false'
         }
 
         return _post(
@@ -436,14 +437,15 @@ class UserService(BaseService):
             content_type=content_type
         )
 
-    def send_file_offer(self, file_id, user_id, scope='content/send'):
+    def send_file_offer(self, file_id, user_id, auto_open=False, scope='content/send'):
         """
         Send an offer to a user for content to be downloaded.
         User authentication required with the following scope: 'content/write'
         """
 
         params = {
-            'UserId': user_id
+            'UserId': user_id,
+            'autoOpen': 'true' if auto_open else 'false'
         }
 
         return _post(
