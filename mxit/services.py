@@ -352,8 +352,8 @@ class UserService(BaseService):
             data=new_file_name
         )
 
-    def upload_gallery_file(self, folder_name, file_name, data=None, input_file_path=None, content_type="image/png",
-                            scope='content/write'):
+    def upload_gallery_file(self, folder_name, file_name, data=None, input_file_path=None,
+                            prevent_share=False, content_type="image/png", scope='content/write'):
         """
         Upload a file to a folder in the Mxit user's gallery
         User authentication required with the following scope: 'content/write'
@@ -365,9 +365,14 @@ class UserService(BaseService):
         if not data:
             raise ValueError('Either the data of a file or the path to a file must be provided')
 
+        params = {
+            'fileName': file_name,
+            'preventShare': 'true' if prevent_share else 'false',
+        }
+
         return _post(
             token=self.oauth.get_user_token(scope),
-            uri='/user/media/file/' + urllib.quote(folder_name) + '?fileName=' + urllib.quote(file_name),
+            uri='/user/media/file/' + urllib.quote(folder_name) + '?' + urllib.urlencode(params),
             data=data,
             content_type=content_type,
         )
@@ -412,7 +417,8 @@ class UserService(BaseService):
             return data
 
     def upload_file_and_send_file_offer(self, file_name, user_id, data=None, input_file_path=None,
-                                        content_type='application/octet-stream', auto_open=False, scope='content/send'):
+                                        content_type='application/octet-stream', auto_open=False,
+                                        prevent_share=False, scope='content/send'):
         """
         Upload a file of any type to store and return a FileId once file offer has been sent.
         No user authentication required
@@ -427,7 +433,8 @@ class UserService(BaseService):
         params = {
             'fileName': file_name,
             'userId': user_id,
-            'autoOpen': 'true' if auto_open else 'false'
+            'autoOpen': 'true' if auto_open else 'false',
+            'preventShare': 'true' if prevent_share else 'false',
         }
 
         return _post(
