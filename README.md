@@ -588,6 +588,7 @@ The file can either be sent as a bytestream in *data* or as a filepath in *input
 * *file_name* (**required**)
 * *data* (**optional**)
 * *input_file_path* (**optional**)
+* *prevent_share* (**optional**)
 * *content_type* (**optional**)
 * *scope* (**optional**)
 
@@ -673,6 +674,8 @@ The file can either be sent as a bytestream in *data* or as a filepath in *input
 * *user_id* (**required**)
 * *data* (**optional**)
 * *input_file_path* (**optional**)
+* *auto_open* (**optional**)
+* *prevent_share* (**optional**)
 * *scope* (**optional**)
 
 ##### Example
